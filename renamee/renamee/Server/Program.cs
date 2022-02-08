@@ -1,4 +1,7 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using renamee.Shared.Models;
+using renamee.Shared.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddValidatorsFromAssemblyContaining<JobOptionsValidator>();
+builder.Services.AddTransient<IJob, Job>();
 
 var app = builder.Build();
 

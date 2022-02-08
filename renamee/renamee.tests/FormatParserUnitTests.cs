@@ -1,5 +1,5 @@
 using FluentAssertions;
-using renamee.Server.Helpers;
+using renamee.Shared.Helpers;
 using System;
 using Xunit;
 
@@ -19,7 +19,7 @@ namespace renamee.tests
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                parser.TryParse(DateTimeOffsetToTest, format, originalFilename, out string result);
+                FormatParser.TryParse(DateTimeOffsetToTest, format, originalFilename, out string result);
             });
         }
 
@@ -29,8 +29,7 @@ namespace renamee.tests
         [InlineData("YEAR.MONTH.DAY-HOUR.MIN.SEC", "original.jpg", "2022.02.07-18.15.22")]
         public void FormatParser_ShouldReturnCorrectResults(string format, string originalFilename, string expectedResult)
         {
-            var parser = new FormatParser();
-            parser.TryParse(DateTimeOffsetToTest, format, originalFilename, out string result);
+            FormatParser.TryParse(DateTimeOffsetToTest, format, originalFilename, out string result);
             result.Should().Be(expectedResult);
         }
 
@@ -43,8 +42,7 @@ namespace renamee.tests
         [InlineData("YEAR.MONTH|ORIGINAL||HOUR")]
         public void FormatParser_ValidateReturnsFalseForNotAcceptedCharacters(string format)
         {
-            var parser = new FormatParser();
-            var result = parser.Validate(format);
+            var result = Shared.Helpers.FormatParser.Validate(format);
             result.Should().Be(false);
         }
 
@@ -54,8 +52,7 @@ namespace renamee.tests
         [InlineData("YEAR|YEAR.MONTH.DAY|YEAR.MONTH.DAY-HOUR.MIN.SEC-ORG")]
         public void FormatParser_ValidateReturnsTrueForCorrectFormats(string format)
         {
-            var parser = new FormatParser();
-            var result = parser.Validate(format);
+            var result = FormatParser.Validate(format);
             result.Should().Be(true);
         }
 

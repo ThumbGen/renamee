@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace renamee.Server.Helpers
+namespace renamee.Shared.Helpers
 {
     public class FormatParser
     {
@@ -16,7 +16,7 @@ namespace renamee.Server.Helpers
 
         public static readonly string[] AcceptedTokens = new[] { Year, Month, Day, Hours, Minute, Seconds, OriginalName };
 
-        public bool Validate(string format)
+        public static bool Validate(string format)
         {
             if (string.IsNullOrEmpty(format)) throw new ArgumentNullException(nameof(format));
 
@@ -30,7 +30,7 @@ namespace renamee.Server.Helpers
             return true;
         }
 
-        public bool TryParse(DateTimeOffset dateTimeOffset, string format, string originalFilename, out string result)
+        public static bool TryParse(DateTimeOffset dateTimeOffset, string format, string originalFilename, out string result)
         {
             if (string.IsNullOrEmpty(format)) throw new ArgumentNullException(nameof(format));
             if (string.IsNullOrEmpty(originalFilename)) throw new ArgumentNullException(nameof(originalFilename));

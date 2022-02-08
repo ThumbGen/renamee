@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using renamee.Shared;
+using renamee.Shared.Models;
 
 namespace renamee.Server.Controllers
 {
@@ -20,8 +21,12 @@ namespace renamee.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get([FromServices] IJob job)
         {
+            job.Options.SourceFolder = @"C:\Users\rvaca\OneDrive\Pictures";
+            job.Options.DestinationFolder = @"C:\renamee_output";
+            await job.Run();
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
