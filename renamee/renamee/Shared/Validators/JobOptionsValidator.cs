@@ -18,7 +18,7 @@ namespace renamee.Shared.Validators
                 .WithMessage("Please provide a valid destination folder");
 
             RuleFor(options => options)
-                .Must(options => DestinationShouldNotBeUnderSourceFolder(options.SourceFolder, options.DestinationFolder))
+                .Must(options => DestinationIsNotUnderSourceFolder(options.SourceFolder, options.DestinationFolder))
                 .WithMessage("The destination folder cannot be under source folder");
             
             RuleFor(options => options.FormatPattern)
@@ -27,7 +27,7 @@ namespace renamee.Shared.Validators
                 .WithMessage("Please provide a valid format pattern");
         }
 
-        private static bool DestinationShouldNotBeUnderSourceFolder(string source, string dest)
+        private static bool DestinationIsNotUnderSourceFolder(string source, string dest)
         {
             var parentUri = new Uri(source);
             var childUri = new Uri(dest);
@@ -35,7 +35,7 @@ namespace renamee.Shared.Validators
             {
                 return false;
             }
-            return false;
+            return true;
         }
 
         protected static bool Exist(string folder)

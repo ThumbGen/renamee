@@ -1,6 +1,8 @@
 ﻿
 using FluentValidation;
+using renamee.Shared.Helpers;
 using renamee.Shared.Validators;
+using System.Linq;
 
 namespace renamee.Shared.Models
 {
@@ -9,6 +11,8 @@ namespace renamee.Shared.Models
         private readonly JobOptionsValidator jobOptionsValidator;
 
         public JobOptions Options { get; set; } = new JobOptions();
+
+        public Guid Id { get; internal set; } = Guid.NewGuid();
 
         public Job(JobOptionsValidator jobOptionsValidator)
         {
@@ -27,7 +31,9 @@ namespace renamee.Shared.Models
 
             // collect files from SourceFolder, apply the FormatPattern and move them to DestinationFolder
 
-            string[] entries = Directory.GetFileSystemEntries(Options.SourceFolder, "*", SearchOption.AllDirectories);
+            var entries = Directory
+                .GetFileSystemEntries(Options.SourceFolder, "*", SearchOption.AllDirectories)
+                .Where(file => MediaInformation.MediaExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()));
 
             //var root = new DirectoryInfo(Options.SourceFolder);
             //var directories = new[] { root }.Concat(root.GetDirectories("*", SearchOption.AllDirectories));
