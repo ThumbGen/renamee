@@ -16,6 +16,8 @@ namespace renamee.Server.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken); // wait 10s for the app to 'warm-up'
+            
             while (true)
             {
                 if (stoppingToken.IsCancellationRequested)
@@ -25,7 +27,7 @@ namespace renamee.Server.Services
 
                 await processorService.Process();
 
-                await Task.Delay(TimeSpan.FromMinutes(/*processorOptions.IntervalMinutes*/2), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(processorOptions.IntervalMinutes), stoppingToken);
             }
         }
     }

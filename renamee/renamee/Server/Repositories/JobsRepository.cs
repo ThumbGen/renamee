@@ -1,28 +1,33 @@
 ﻿using JsonFlatFileDataStore;
+using Microsoft.Extensions.Options;
+using renamee.Server.Options;
 using renamee.Shared.Models;
 
 namespace renamee.Server.Repositories
 {
     public interface IJobsRepository
     {
-        Task<IEnumerable<IJob>> GetAll();
-        Task Delete(IJob job);
-        Task AddOrUpdate(IJob job);
+        Task<IEnumerable<Job>> GetAll();
+        Task Delete(Job job);
+        Task AddOrUpdate(Job job);
     }
 
     public class JobsRepository : IJobsRepository
     {
         private readonly DataStore store;
+        private readonly RepositoryOptions options;
 
-        public JobsRepository()
+        public JobsRepository(IOptions<RepositoryOptions> repositoryOptions)
         {
+            options = repositoryOptions.Value;
+
             // Open database (create new if file doesn't exist)
-            store = new DataStore("jobs_db.json");
+            store = new DataStore(Path.Combine(OperatingSystem.IsLinux() ? options.DatabasePathLinux : options.DatabasePath, "jobs_db.json"));
         }
 
-        public async Task AddOrUpdate(IJob job)
+        public async Task AddOrUpdate(Job job)
         {
-            var jobs = store.GetCollection<IJob>();
+            var jobs = store.GetCollection<Job>();
             var found = Find(jobs, job);
             if (found != null)
             {
@@ -31,9 +36,9 @@ namespace renamee.Server.Repositories
             await jobs.InsertOneAsync(job);
         }
 
-        public async Task Delete(IJob job)
+        public async Task Delete(Job job)
         {
-            var jobs = store.GetCollection<IJob>();
+            var jobs = store.GetCollection<Job>();
             var found = Find(jobs, job);
             if (found != null)
             {
@@ -41,14 +46,14 @@ namespace renamee.Server.Repositories
             }
         }
 
-        public Task<IEnumerable<IJob>> GetAll()
+        public Task<IEnumerable<Job>> GetAll()
         {
-            return Task.FromResult(store.GetCollection<IJob>().AsQueryable().AsEnumerable());
+            return Task.FromResult(store.GetCollection<Job>().AsQueryable().AsEnumerable());
         }
 
-        private static IJob? Find(IDocumentCollection<IJob> jobs, IJob job)
+        private static Job? Find(IDocumentCollection<Job> jobs, Job job)
         {
-            return jobs.Find(x => x.Id == job.Id).SingleOrDefault();
+            return jobs.Find(x => x.JobId == job.JobId).SingleOrDefault();
         }
     }
 }

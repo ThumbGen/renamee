@@ -26,14 +26,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 // services
-builder.Services.AddValidatorsFromAssemblyContaining<JobOptionsValidator>();
-builder.Services.AddTransient<IJob, Job>();
+builder.Services.AddValidatorsFromAssemblyContaining<JobValidator>(ServiceLifetime.Transient);
+builder.Services.AddTransient<Job>();
 builder.Services.AddSingleton<IJobsRepository, JobsRepository>();
 builder.Services.AddSingleton<IProcessorService, ProcessorService>();
 builder.Services.AddHostedService<BackgroundProcessorService>();
 
 // options
 builder.Services.Configure<ProcessorOptions>(builder.Configuration.GetSection(ProcessorOptions.Processor));
+builder.Services.Configure<RepositoryOptions>(builder.Configuration.GetSection(RepositoryOptions.Repository));
 
 var app = builder.Build();
 

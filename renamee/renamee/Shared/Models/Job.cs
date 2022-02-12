@@ -1,29 +1,30 @@
-﻿
-using FluentValidation;
+﻿using FluentValidation;
 using renamee.Shared.Helpers;
 using renamee.Shared.Validators;
 using System.Linq;
 
 namespace renamee.Shared.Models
 {
-    public class Job : IJob
+    public class Job
     {
-        private readonly JobOptionsValidator jobOptionsValidator;
+        private readonly IValidator<Job> jobValidator = new JobValidator();
 
-        public JobOptions Options { get; set; } = new JobOptions();
+        public JobOptions Options { get; } = new JobOptions();
 
-        public Guid Id { get; internal set; } = Guid.NewGuid();
+        public Guid JobId { get; internal set; } = Guid.NewGuid();
 
-        public Job(JobOptionsValidator jobOptionsValidator)
+        public string Name { get; set; } = "unknown";
+
+        public DateTimeOffset LastExecutedOn { get; private set; } = DateTimeOffset.MinValue;
+
+        public Job()
         {
-            this.jobOptionsValidator = jobOptionsValidator;
+            
         }
-
 
         public async Task Run()
         {
-            if (Options == null) throw new ArgumentNullException(nameof(Options));
-            var validationResult = await jobOptionsValidator.ValidateAsync(Options);
+            var validationResult = await jobValidator.ValidateAsync(this);
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
@@ -37,7 +38,6 @@ namespace renamee.Shared.Models
 
             //var root = new DirectoryInfo(Options.SourceFolder);
             //var directories = new[] { root }.Concat(root.GetDirectories("*", SearchOption.AllDirectories));
-
 
 
         }
