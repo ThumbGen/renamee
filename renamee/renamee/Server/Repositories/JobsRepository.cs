@@ -31,7 +31,7 @@ namespace renamee.Server.Repositories
             var found = Find(jobs, job);
             if (found != null)
             {
-                await jobs.DeleteOneAsync(found);
+                await jobs.DeleteOneAsync(x => x.JobId == found.JobId);
             }
             await jobs.InsertOneAsync(job);
         }

@@ -24,11 +24,13 @@ namespace renamee.Server.Services
 
         public async Task Process()
         {
-            if(!(await jobsRepository.GetAll()).Any())
+            if (!(await jobsRepository.GetAll()).Any())
             {
                 var job = serviceProvider.GetRequiredService<Job>();
+                job.JobId = Guid.Parse("bb1e5584-fcea-489c-b0b2-8b0fbfa39796");
                 job.Name = "demo job";
-                job.Options.SourceFolder = @"C:\renamee_input\"; //@"C:\Users\rvaca\OneDrive\Pictures\";
+                job.ActionType = JobActionType.Copy;
+                job.Options.SourceFolder = @"C:\renamee_input\";
                 job.Options.DestinationFolder = @"C:\renamee_output\";
 
                 await jobsRepository.AddOrUpdate(job);
@@ -38,17 +40,26 @@ namespace renamee.Server.Services
             logger.LogInformation("Processing jobs...");
             var sw = new Stopwatch();
             sw.Start();
-            foreach (var job in await jobsRepository.GetAll())
+            foreach (var jobEntity in await jobsRepository.GetAll())
             {
-                try
+                var job = serviceProvider.GetService<Job>();
+                if (job != null)
                 {
-                    await job.Run();
-                    logger.LogInformation($"\tJob '{job.Name}' done in {sw.Elapsed:hh\\:mm\\:ss}");
+                    job.AssignFrom(jobEntity);
+
+                    try
+                    {
+                        await job.Run();
+                        logger.LogInformation($"\tJob '{job.Name}' done in {sw.Elapsed:hh\\:mm\\:ss}");
+
+                        await jobsRepository.AddOrUpdate(job);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError($"\tFailed processing job {job.Name} / {job.JobId}", ex);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    logger.LogError($"\tFailed processing job {job.Name} / {job.JobId}", ex);
-                }
+                else logger.LogError("Can't resolve a Job");
             }
             sw.Stop();
             logger.LogInformation($"Finish processing jobs in {sw.Elapsed:hh\\:mm\\:ss}");

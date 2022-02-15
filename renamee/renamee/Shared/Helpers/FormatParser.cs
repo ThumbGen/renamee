@@ -2,7 +2,7 @@
 
 namespace renamee.Shared.Helpers
 {
-    public class FormatParser
+    public static class FormatParser
     {
         public const char FolderSeparator = '|';
         private const string FormatRegexPattern = @"YEAR[.\-|]*|MONTH[.\-|]*|DAY[.\-|]*|HOUR[.\-|]*|MIN[.\-|]*|SEC[.\-|]*|ORG[.\-|]*";

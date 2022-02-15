@@ -6,9 +6,10 @@
         "destinationFolder": "C:\\renamee_output\\",
         "formatPattern": "YEAR|YEAR.MONTH.DAY|YEAR.MONTH.DAY-HOUR.MIN.SEC-ORG"
       },
-      "jobId": "c4de9d7f-48c2-4626-b41f-52a7ff2a7505",
+      "jobId": "bb1e5584-fcea-489c-b0b2-8b0fbfa39796",
       "name": "demo job",
-      "lastExecutedOn": "0001-01-01T01:00:00+01:00"
+      "actionType": 1,
+      "lastExecutedOn": "2022-02-15T19:48:52.8785457+01:00"
     }
   ]
 }
