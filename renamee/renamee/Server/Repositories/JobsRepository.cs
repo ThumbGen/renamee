@@ -28,27 +28,28 @@ namespace renamee.Server.Repositories
         public async Task AddOrUpdate(Job job)
         {
             var jobs = store.GetCollection<Job>();
-            var found = Find(jobs, job);
-            if (found != null)
-            {
-                await jobs.DeleteOneAsync(x => x.JobId == found.JobId);
-            }
+            await DeleteCore(jobs, job);
             await jobs.InsertOneAsync(job);
         }
 
         public async Task Delete(Job job)
         {
             var jobs = store.GetCollection<Job>();
-            var found = Find(jobs, job);
-            if (found != null)
-            {
-                await jobs.DeleteOneAsync(found);
-            }
+            await DeleteCore(jobs, job);
         }
 
         public Task<IEnumerable<Job>> GetAll()
         {
             return Task.FromResult(store.GetCollection<Job>().AsQueryable().AsEnumerable());
+        }
+
+        private static async Task DeleteCore(IDocumentCollection<Job> jobs, Job job)
+        {
+            var found = Find(jobs, job);
+            if (found != null)
+            {
+                await jobs.DeleteOneAsync(x => x.JobId == found.JobId);
+            }
         }
 
         private static Job? Find(IDocumentCollection<Job> jobs, Job job)
