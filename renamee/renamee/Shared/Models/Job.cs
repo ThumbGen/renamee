@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
 using renamee.Shared.Helpers;
+using renamee.Shared.Interfaces;
 using renamee.Shared.Validators;
+using System.Globalization;
 
 namespace renamee.Shared.Models
 {
@@ -9,6 +11,7 @@ namespace renamee.Shared.Models
     {
         private readonly IValidator<Job> jobValidator = new JobValidator();
         private readonly ILogger<Job> logger;
+        private readonly IReverseGeocoder reverseGeocoder;
 
         public JobOptions Options { get; set; } = new JobOptions();
 
@@ -18,11 +21,14 @@ namespace renamee.Shared.Models
 
         public JobActionType ActionType { get; set; } = JobActionType.Simulate;
 
+        public bool IsEnabled { get; set; } = false;
+
         public DateTimeOffset LastExecutedOn { get; private set; } = DateTimeOffset.MinValue;
 
-        public Job(ILogger<Job> logger)
+        public Job(ILogger<Job> logger, IReverseGeocoder reverseGeocoder)
         {
             this.logger = logger;
+            this.reverseGeocoder = reverseGeocoder;
         }
 
         public void AssignFrom(Job job)
@@ -58,20 +64,33 @@ namespace renamee.Shared.Models
             //TODO introduce parallelism and process more files in parallel
             foreach (var file in files)
             {
-                ProcessFile(file);
+                await ProcessFile(file);
             }
 
         }
 
-        private void ProcessFile(string filePath)
+        private async Task<GeocodingData> ReverseGeocode(string filePath)
+        {
+            if (reverseGeocoder == null) return new GeocodingData(string.Empty, string.Empty);
+
+            var (latitude, longitude) = GPSHelper.GetCoordinates(filePath);
+
+            return await reverseGeocoder.Resolve(latitude, longitude);
+        }
+
+        private async Task ProcessFile(string filePath)
         {
             try
             {
                 var date = FileDateHelper.GetFileDate(filePath);
                 var filename = Path.GetFileName(filePath);
                 var extension = Path.GetExtension(filePath);
+                
+                // perform reverse geocoding only if the pattern contains City and/or Country
+                var geocodingData = (Options.FormatPattern.Contains(FormatParser.City) || Options.FormatPattern.Contains(FormatParser.Country)) ? await ReverseGeocode(filePath) : null;
 
-                if (date.HasValue && !date.Value.Equals(default) && FormatParser.TryParse(date.Value, this.Options.FormatPattern, filename, out string finalSegments))
+                // if the date is valid and can be parsed correctly...
+                if (date.HasValue && !date.Value.Equals(default) && FormatParser.TryParse(date.Value, this.Options.FormatPattern, filename, out string finalSegments, geocodingData))
                 {
                     var coercedFinalSegments = finalSegments.Replace('|', Path.DirectorySeparatorChar);
                     logger.LogDebug($"Processing '{filename}' into '{coercedFinalSegments + extension}'");

@@ -9,7 +9,8 @@
       "jobId": "bb1e5584-fcea-489c-b0b2-8b0fbfa39796",
       "name": "demo job",
       "actionType": 1,
-      "lastExecutedOn": "2022-02-15T19:48:52.8785457+01:00"
+      "isEnabled": false,
+      "lastExecutedOn": "2022-02-17T19:17:12.4207361+01:00"
     }
   ]
 }

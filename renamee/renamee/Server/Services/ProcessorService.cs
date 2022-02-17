@@ -24,6 +24,7 @@ namespace renamee.Server.Services
 
         public async Task Process()
         {
+            // TODO remove
             if (!(await jobsRepository.GetAll()).Any())
             {
                 var job = serviceProvider.GetRequiredService<Job>();
@@ -40,8 +41,15 @@ namespace renamee.Server.Services
             logger.LogInformation("Processing jobs...");
             var sw = new Stopwatch();
             sw.Start();
+
             foreach (var jobEntity in await jobsRepository.GetAll())
             {
+                if (!jobEntity.IsEnabled)
+                {
+                    logger.LogInformation($"\tSkipping job '{jobEntity.Name}' as it is disabled.");
+                    continue;
+                }
+
                 var job = serviceProvider.GetService<Job>();
                 if (job != null)
                 {
@@ -61,6 +69,7 @@ namespace renamee.Server.Services
                 }
                 else logger.LogError("Can't resolve a Job");
             }
+
             sw.Stop();
             logger.LogInformation($"Finish processing jobs in {sw.Elapsed:hh\\:mm\\:ss}");
         }

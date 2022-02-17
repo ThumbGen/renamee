@@ -22,7 +22,7 @@ namespace renamee.Server.Repositories
             options = repositoryOptions.Value;
 
             // Open database (create new if file doesn't exist)
-            store = new DataStore(Path.Combine(OperatingSystem.IsLinux() ? options.DatabasePathLinux : options.DatabasePath, "jobs_db.json"));
+            store = new DataStore(OperatingSystem.IsLinux() ? options.DatabasePathLinux : options.DatabasePath);
         }
 
         public async Task AddOrUpdate(Job job)

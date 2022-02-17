@@ -2,6 +2,7 @@ using FluentValidation;
 using renamee.Server.Options;
 using renamee.Server.Repositories;
 using renamee.Server.Services;
+using renamee.Shared.Interfaces;
 using renamee.Shared.Models;
 using renamee.Shared.Validators;
 
@@ -29,8 +30,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddValidatorsFromAssemblyContaining<JobValidator>(ServiceLifetime.Transient);
 builder.Services.AddTransient<Job>();
 builder.Services.AddSingleton<IJobsRepository, JobsRepository>();
+builder.Services.AddSingleton<ISettingsRepository, SettingsRepository>();
 builder.Services.AddSingleton<IProcessorService, ProcessorService>();
 builder.Services.AddHostedService<BackgroundProcessorService>();
+builder.Services.AddSingleton<IReverseGeocoder, BigDataCloudService>();
 
 // options
 builder.Services.Configure<ProcessorOptions>(builder.Configuration.GetSection(ProcessorOptions.Processor));

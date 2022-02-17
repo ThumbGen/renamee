@@ -15,8 +15,6 @@ namespace renamee.tests
         [InlineData("YEAR", null)]
         public void FormatParser_ShouldThrowArgumentNullExceptionOnMissingArguments(string format, string originalFilename)
         {
-            var parser = new FormatParser();
-
             Assert.Throws<ArgumentNullException>(() =>
             {
                 FormatParser.TryParse(DateTimeOffsetToTest, format, originalFilename, out string result);
@@ -59,7 +57,16 @@ namespace renamee.tests
         [Fact]
         public void FormatParser_AcceptedTokensListIsCorrect()
         {
-            FormatParser.AcceptedTokens.Should().BeEquivalentTo(new[] { FormatParser.Year, FormatParser.Month, FormatParser.Day, FormatParser.Hours, FormatParser.Minute, FormatParser.Seconds, FormatParser.OriginalName });
+            FormatParser.AcceptedTokens.Should().BeEquivalentTo(new[] { 
+                FormatParser.Year, 
+                FormatParser.Month, 
+                FormatParser.Day, 
+                FormatParser.Hours, 
+                FormatParser.Minute, 
+                FormatParser.Seconds, 
+                FormatParser.OriginalName,
+                FormatParser.City,
+                FormatParser.Country});
         }
     }
 }

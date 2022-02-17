@@ -1,0 +1,8 @@
+{
+  "settings": {
+    "geocoder": {
+      "apiKey": "",
+      "language": "en"
+    }
+  }
+}
