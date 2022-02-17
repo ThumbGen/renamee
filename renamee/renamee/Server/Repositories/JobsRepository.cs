@@ -8,7 +8,7 @@ namespace renamee.Server.Repositories
     public interface IJobsRepository
     {
         Task<IEnumerable<Job>> GetAll();
-        Task Delete(Job job);
+        Task Delete(Guid jobId);
         Task AddOrUpdate(Job job);
     }
 
@@ -28,14 +28,14 @@ namespace renamee.Server.Repositories
         public async Task AddOrUpdate(Job job)
         {
             var jobs = store.GetCollection<Job>();
-            await DeleteCore(jobs, job);
+            await DeleteCore(jobs, job.JobId);
             await jobs.InsertOneAsync(job);
         }
 
-        public async Task Delete(Job job)
+        public async Task Delete(Guid jobId)
         {
             var jobs = store.GetCollection<Job>();
-            await DeleteCore(jobs, job);
+            await DeleteCore(jobs, jobId);
         }
 
         public Task<IEnumerable<Job>> GetAll()
@@ -43,18 +43,18 @@ namespace renamee.Server.Repositories
             return Task.FromResult(store.GetCollection<Job>().AsQueryable().AsEnumerable());
         }
 
-        private static async Task DeleteCore(IDocumentCollection<Job> jobs, Job job)
+        private static async Task DeleteCore(IDocumentCollection<Job> jobs, Guid jobId)
         {
-            var found = Find(jobs, job);
+            var found = Find(jobs, jobId);
             if (found != null)
             {
                 await jobs.DeleteOneAsync(x => x.JobId == found.JobId);
             }
         }
 
-        private static Job? Find(IDocumentCollection<Job> jobs, Job job)
+        private static Job? Find(IDocumentCollection<Job> jobs, Guid jobId)
         {
-            return jobs.Find(x => x.JobId == job.JobId).SingleOrDefault();
+            return jobs.Find(x => x.JobId == jobId).SingleOrDefault();
         }
     }
 }

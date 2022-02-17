@@ -1,5 +1,6 @@
 ﻿@page "/fetchdata"
 @using renamee.Shared
+@using renamee.Shared.Models
 @inject HttpClient Http
 
 <PageTitle>Weather forecast</PageTitle>
@@ -8,7 +9,7 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (jobs == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -18,19 +19,19 @@ else
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Name</th>
+                <th>Source folder</th>
+                <th>Dest folder</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var job in jobs)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@job.LastExecutedOn.ToLocalTime()</td>
+                    <td>@job.Name</td>
+                    <td>@job.Options.SourceFolder</td>
+                    <td>@job.Options.DestinationFolder</td>
                 </tr>
             }
         </tbody>
@@ -38,10 +39,10 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private Job[]? jobs;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        jobs = await Http.GetFromJsonAsync<Job[]>("Jobs");
     }
 }
