@@ -1,8 +1,9 @@
-﻿namespace renamee.Shared.Models
+﻿using renamee.Shared.DTOs;
+
+namespace renamee.Shared.Models
 {
     public class JobOptions
     {
-        public const string DefaultPattern = "YEAR|YEAR.MONTH.DAY|YEAR.MONTH.DAY-HOUR.MIN.SEC-ORG";
         private string sourceFolder = string.Empty;
         private string destinationFolder = string.Empty;
 
@@ -36,6 +37,16 @@
                 destinationFolder = value ?? string.Empty;
             }
         }
-        public string FormatPattern { get; set; } = DefaultPattern;
+        public string FormatPattern { get; set; } = JobOptionsDto.DefaultPattern;
+
+        public void AssignFrom(JobOptionsDto jobOptions)
+        {
+            if (jobOptions != null)
+            {
+                SourceFolder = jobOptions.SourceFolder;
+                DestinationFolder = jobOptions.DestinationFolder;
+                FormatPattern = jobOptions.FormatPattern;
+            }
+        }
     }
 }

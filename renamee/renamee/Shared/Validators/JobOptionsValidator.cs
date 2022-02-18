@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using renamee.Shared.Models;
+using renamee.Shared.DTOs;
 
 namespace renamee.Shared.Validators
 {
-    public class JobOptionsValidator : AbstractValidator<JobOptions>
+    public class JobOptionsValidator : AbstractValidator<JobOptionsDto>
     {
         public JobOptionsValidator()
         {

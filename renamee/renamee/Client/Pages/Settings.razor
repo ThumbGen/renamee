@@ -1,0 +1,27 @@
+﻿@page "/settings"
+
+@using renamee.Shared
+@using renamee.Shared.Models
+@inject HttpClient Http
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Settings</h1>
+
+@if (settings == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @settings.Geocoder.Language
+}
+
+@code {
+    private renamee.Shared.Models.Settings? settings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        settings = await Http.GetFromJsonAsync<renamee.Shared.Models.Settings>("Settings");
+    }
+}

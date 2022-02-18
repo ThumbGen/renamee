@@ -1,13 +1,12 @@
-﻿@page "/fetchdata"
+﻿@page "/jobs"
 @using renamee.Shared
-@using renamee.Shared.Models
+@using renamee.Shared.DTOs
 @inject HttpClient Http
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Jobs list</PageTitle>
 
-<h1>Weather forecast</h1>
+<h1>Jobs</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
 
 @if (jobs == null)
 {
@@ -39,10 +38,10 @@ else
 }
 
 @code {
-    private Job[]? jobs;
+    private JobDto[]? jobs;
 
     protected override async Task OnInitializedAsync()
     {
-        jobs = await Http.GetFromJsonAsync<Job[]>("Jobs");
+        jobs = await Http.GetFromJsonAsync<JobDto[]>("Jobs");
     }
 }

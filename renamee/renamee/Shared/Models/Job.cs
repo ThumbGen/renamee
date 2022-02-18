@@ -1,17 +1,18 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
+using renamee.Shared.DTOs;
 using renamee.Shared.Helpers;
 using renamee.Shared.Interfaces;
 using renamee.Shared.Validators;
-using System.Globalization;
 
 namespace renamee.Shared.Models
 {
+
     public class Job
     {
-        private readonly IValidator<Job> jobValidator = new JobValidator();
-        private readonly ILogger<Job> logger;
-        private readonly IReverseGeocoder reverseGeocoder;
+        private readonly IValidator<JobDto> jobValidator = new JobValidator();
+        private readonly ILogger<Job>? logger;
+        private readonly IReverseGeocoder? reverseGeocoder;
 
         public JobOptions Options { get; set; } = new JobOptions();
 
@@ -25,19 +26,19 @@ namespace renamee.Shared.Models
 
         public DateTimeOffset LastExecutedOn { get; private set; } = DateTimeOffset.MinValue;
 
-        public Job(ILogger<Job> logger, IReverseGeocoder reverseGeocoder)
+        public Job(ILogger<Job>? logger, IReverseGeocoder? reverseGeocoder)
         {
             this.logger = logger;
             this.reverseGeocoder = reverseGeocoder;
         }
 
-        public void AssignFrom(Job job)
+        public void AssignFrom(JobDto job)
         {
             JobId = job.JobId;
             Name = job.Name;
             LastExecutedOn = job.LastExecutedOn;
             ActionType = job.ActionType;
-            Options = job.Options;
+            Options.AssignFrom(job.Options);
         }
 
         public void Reset()
@@ -47,7 +48,7 @@ namespace renamee.Shared.Models
 
         public async Task Run()
         {
-            var validationResult = await jobValidator.ValidateAsync(this);
+            var validationResult = await jobValidator.ValidateAsync(this.ToDto());
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
@@ -57,7 +58,7 @@ namespace renamee.Shared.Models
 
             var files = Directory
                 .GetFileSystemEntries(Options.SourceFolder, "*", SearchOption.AllDirectories)
-                .Where(file => MediaInformation.MediaExtensions.Contains(Path.GetExtension(file).ToUpperInvariant())) 
+                .Where(file => MediaInformation.MediaExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
                 //.Where(file => new FileInfo(file).LastWriteTimeUtc > this.LastExecutedOn) // TODO refine this
                 ?? Enumerable.Empty<string>();
 
@@ -85,7 +86,7 @@ namespace renamee.Shared.Models
                 var date = FileDateHelper.GetFileDate(filePath);
                 var filename = Path.GetFileName(filePath);
                 var extension = Path.GetExtension(filePath);
-                
+
                 // perform reverse geocoding only if the pattern contains City and/or Country
                 var geocodingData = (Options.FormatPattern.Contains(FormatParser.City) || Options.FormatPattern.Contains(FormatParser.Country)) ? await ReverseGeocode(filePath) : null;
 
@@ -112,7 +113,7 @@ namespace renamee.Shared.Models
                             File.Move(filePath, targetPath, true);
                             break;
                     }
-                    
+
                     LastExecutedOn = DateTimeOffset.UtcNow;
                 }
                 else

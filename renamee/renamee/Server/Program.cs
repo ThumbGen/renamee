@@ -1,4 +1,5 @@
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using renamee.Server.Options;
 using renamee.Server.Repositories;
 using renamee.Server.Services;
@@ -23,7 +24,7 @@ builder.WebHost.ConfigureKestrel(options =>
 // Add services to the container.
 
 builder.Services.AddHealthChecks();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddFluentValidation();
 builder.Services.AddRazorPages();
 
 // services

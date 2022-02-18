@@ -1,4 +1,6 @@
 ﻿using renamee.Server.Repositories;
+using renamee.Shared.DTOs;
+using renamee.Shared.Helpers;
 using renamee.Shared.Models;
 using System.Diagnostics;
 
@@ -27,10 +29,17 @@ namespace renamee.Server.Services
             // TODO remove
             if (!(await jobsRepository.GetAll()).Any())
             {
-                var job = serviceProvider.GetRequiredService<Job>();
-                job.JobId = Guid.Parse("bb1e5584-fcea-489c-b0b2-8b0fbfa39796");
-                job.Name = "demo job";
-                job.ActionType = JobActionType.Copy;
+                var job = new JobDto
+                {
+                    JobId = Guid.Parse("bb1e5584-fcea-489c-b0b2-8b0fbfa39796"),
+                    Name = "demo job",
+                    ActionType = JobActionType.Copy,
+                    Options = new JobOptionsDto
+                    {
+                        SourceFolder = @"C:\renamee_input\",
+                        DestinationFolder = @"C:\renamee_output\"
+                    }
+                };
                 job.Options.SourceFolder = @"C:\renamee_input\";
                 job.Options.DestinationFolder = @"C:\renamee_output\";
 
@@ -60,7 +69,7 @@ namespace renamee.Server.Services
                         await job.Run();
                         logger.LogInformation($"\tJob '{job.Name}' done in {sw.Elapsed:hh\\:mm\\:ss}");
 
-                        await jobsRepository.AddOrUpdate(job);
+                        await jobsRepository.AddOrUpdate(job.ToDto());
                     }
                     catch (Exception ex)
                     {

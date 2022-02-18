@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using renamee.Server.Repositories;
-using renamee.Shared.Models;
+using renamee.Shared.DTOs;
 
 namespace renamee.Server.Controllers
 {
@@ -16,15 +16,20 @@ namespace renamee.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Job>> Get()
+        public async Task<IEnumerable<JobDto>> Get()
         {
             return await jobsRepository.GetAll();
         }
 
         [HttpPut]
-        public async Task Put(Job job)
+        public async Task<IActionResult> Put(JobDto job)
         {
+            if (!ModelState.IsValid)
+            { 
+                return new StatusCodeResult(412);
+            }
             await jobsRepository.AddOrUpdate(job);
+            return NoContent();
         }
 
         [HttpDelete]
@@ -34,9 +39,14 @@ namespace renamee.Server.Controllers
         }
 
         [HttpPost]
-        public async Task Create(Job job)
+        public async Task<IActionResult> Create(JobDto job)
         {
+            if (!ModelState.IsValid)
+            {
+                return new StatusCodeResult(412);
+            }
             await jobsRepository.AddOrUpdate(job);
+            return NoContent();
         }
     }
 }

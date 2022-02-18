@@ -1,15 +1,15 @@
 ﻿using JsonFlatFileDataStore;
 using Microsoft.Extensions.Options;
 using renamee.Server.Options;
-using renamee.Shared.Models;
+using renamee.Shared.DTOs;
 
 namespace renamee.Server.Repositories
 {
     public interface IJobsRepository
     {
-        Task<IEnumerable<Job>> GetAll();
+        Task<IEnumerable<JobDto>> GetAll();
         Task Delete(Guid jobId);
-        Task AddOrUpdate(Job job);
+        Task AddOrUpdate(JobDto job);
     }
 
     public class JobsRepository : IJobsRepository
@@ -25,25 +25,25 @@ namespace renamee.Server.Repositories
             store = new DataStore(OperatingSystem.IsLinux() ? options.DatabasePathLinux : options.DatabasePath);
         }
 
-        public async Task AddOrUpdate(Job job)
+        public async Task AddOrUpdate(JobDto job)
         {
-            var jobs = store.GetCollection<Job>();
+            var jobs = store.GetCollection<JobDto>();
             await DeleteCore(jobs, job.JobId);
             await jobs.InsertOneAsync(job);
         }
 
         public async Task Delete(Guid jobId)
         {
-            var jobs = store.GetCollection<Job>();
+            var jobs = store.GetCollection<JobDto>();
             await DeleteCore(jobs, jobId);
         }
 
-        public Task<IEnumerable<Job>> GetAll()
+        public Task<IEnumerable<JobDto>> GetAll()
         {
-            return Task.FromResult(store.GetCollection<Job>().AsQueryable().AsEnumerable());
+            return Task.FromResult(store.GetCollection<JobDto>().AsQueryable().AsEnumerable());
         }
 
-        private static async Task DeleteCore(IDocumentCollection<Job> jobs, Guid jobId)
+        private static async Task DeleteCore(IDocumentCollection<JobDto> jobs, Guid jobId)
         {
             var found = Find(jobs, jobId);
             if (found != null)
@@ -52,7 +52,7 @@ namespace renamee.Server.Repositories
             }
         }
 
-        private static Job? Find(IDocumentCollection<Job> jobs, Guid jobId)
+        private static JobDto? Find(IDocumentCollection<JobDto> jobs, Guid jobId)
         {
             return jobs.Find(x => x.JobId == jobId).SingleOrDefault();
         }
