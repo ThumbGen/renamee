@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "renamee.Client", "renamee\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "renamee.Shared", "renamee\Shared\renamee.Shared.csproj", "{BE735E9C-AECD-43FA-AA78-135493956F08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "renamee.tests", "renamee.tests\renamee.tests.csproj", "{95557D20-2001-4EA1-B2A9-A4FD0E457464}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "renamee.tests", "renamee.tests\renamee.tests.csproj", "{95557D20-2001-4EA1-B2A9-A4FD0E457464}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

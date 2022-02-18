@@ -1,18 +1,4 @@
 {
-  "job": [
-    {
-      "options": {
-        "sourceFolder": "C:\\renamee_input\\",
-        "destinationFolder": "C:\\renamee_output\\",
-        "formatPattern": "YEAR|YEAR.MONTH.DAY|YEAR.MONTH.DAY-HOUR.MIN.SEC-ORG"
-      },
-      "jobId": "bb1e5584-fcea-489c-b0b2-8b0fbfa39796",
-      "name": "demo job",
-      "actionType": 1,
-      "isEnabled": false,
-      "lastExecutedOn": "2022-02-17T19:17:12.4207361+01:00"
-    }
-  ],
   "jobDto": [
     {
       "options": {
@@ -23,6 +9,30 @@
       "jobId": "bb1e5584-fcea-489c-b0b2-8b0fbfa39796",
       "name": "demo job",
       "actionType": 1,
+      "isEnabled": false,
+      "lastExecutedOn": "0001-01-01T01:00:00+01:00"
+    },
+    {
+      "options": {
+        "sourceFolder": "C:\\renamee_input4343\\",
+        "destinationFolder": "C:\\renamee_output4343\\",
+        "formatPattern": "YEAR|YEAR.MONTH.DAY|YEAR.MONTH.DAY-HOUR.MIN.SEC-ORG"
+      },
+      "jobId": "db1e5584-fcea-489c-b0b2-8b0fbfa39796",
+      "name": "demo job2",
+      "actionType": 0,
+      "isEnabled": false,
+      "lastExecutedOn": "0001-01-01T01:00:00+01:00"
+    },
+    {
+      "options": {
+        "sourceFolder": "C:\\renamee_input123\\",
+        "destinationFolder": "C:\\renamee_output123\\",
+        "formatPattern": "YEAR|YEAR.MONTH.DAY|YEAR.MONTH.DAY-HOUR.MIN.SEC-ORG"
+      },
+      "jobId": "cb1e5584-fcea-489c-b0b2-8b0fbfa39796",
+      "name": "demo job",
+      "actionType": 2,
       "isEnabled": false,
       "lastExecutedOn": "0001-01-01T01:00:00+01:00"
     }

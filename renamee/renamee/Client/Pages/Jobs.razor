@@ -1,47 +1,48 @@
 ﻿@page "/jobs"
-@using renamee.Shared
-@using renamee.Shared.DTOs
-@inject HttpClient Http
+@using renamee.Shared.Models;
 
-<PageTitle>Jobs list</PageTitle>
+<PageTitle>Jobs</PageTitle>
 
-<h1>Jobs</h1>
-
+<MudText Typo="Typo.h4" Class="ml-4 mt-4">Jobs</MudText>
 
 @if (jobs == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>Loading jobs...</em></p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Source folder</th>
-                <th>Dest folder</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var job in jobs)
-            {
-                <tr>
-                    <td>@job.LastExecutedOn.ToLocalTime()</td>
-                    <td>@job.Name</td>
-                    <td>@job.Options.SourceFolder</td>
-                    <td>@job.Options.DestinationFolder</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+    <MudExpansionPanels Class="ma-4">
+        @foreach (var job in jobs)
+        {
+            <MudExpansionPanel Text="@job.Name">
+                <TitleContent>
+                    <div class="d-flex">
+                        <p>
+                            <MudText Typo="Typo.h6">@job.Name</MudText>
+                            <MudText Typo="Typo.caption" Align="Align.Right" Style="width: 100%">Last executed on: @job.LastExecutedOn.ToString("yyyy.MM.dd HH:mm")</MudText>
+                        </p>
+                        <MudChipSet ReadOnly="true" Class="d-flex ml-auto" Style="width: 200px">
+                            <MudChip Label="true" Size="Size.Small" Color="@(job.IsEnabled ? Color.Success : Color.Error)">@(job.IsEnabled ? "enabled" : "disabled")</MudChip>
+                            <MudChip Label="true" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default">@(job.ActionType == JobActionType.Simulate ? "simulate" : (job.ActionType == JobActionType.Copy ? "copy" : "move"))</MudChip>
+                        </MudChipSet>
+                    </div>
+                </TitleContent>
+                <ChildContent>
+                    <MudCard Elevation="0">
+                        <MudCardContent>
+                            <MudText Typo="Typo.h5">Old Paint</MudText>
+                            <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
+                            <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </ChildContent>
 
-@code {
-    private JobDto[]? jobs;
+            </MudExpansionPanel>
+        }
+    </MudExpansionPanels>
 
-    protected override async Task OnInitializedAsync()
-    {
-        jobs = await Http.GetFromJsonAsync<JobDto[]>("Jobs");
-    }
 }

@@ -5,7 +5,7 @@ using renamee.Shared.DTOs;
 namespace renamee.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class JobsController : ControllerBase
     {
         private readonly IJobsRepository jobsRepository;

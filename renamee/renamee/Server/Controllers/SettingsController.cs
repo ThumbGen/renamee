@@ -5,7 +5,7 @@ using renamee.Shared.Models;
 namespace renamee.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SettingsController : ControllerBase
     {
         private readonly ISettingsRepository settingsRepository;

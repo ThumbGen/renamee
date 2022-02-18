@@ -22,6 +22,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        settings = await Http.GetFromJsonAsync<renamee.Shared.Models.Settings>("Settings");
+        settings = await Http.GetFromJsonAsync<renamee.Shared.Models.Settings>("api/settings");
     }
 }
