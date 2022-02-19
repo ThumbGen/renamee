@@ -16,27 +16,44 @@ else
         {
             <MudExpansionPanel Text="@job.Name">
                 <TitleContent>
-                    <div class="d-flex">
-                        <p>
-                            <MudText Typo="Typo.h6">@job.Name</MudText>
-                            <MudText Typo="Typo.caption" Align="Align.Right" Style="width: 100%">Last executed on: @job.LastExecutedOn.ToString("yyyy.MM.dd HH:mm")</MudText>
-                        </p>
-                        <MudChipSet ReadOnly="true" Class="d-flex ml-auto" Style="width: 200px">
-                            <MudChip Label="true" Size="Size.Small" Color="@(job.IsEnabled ? Color.Success : Color.Error)">@(job.IsEnabled ? "enabled" : "disabled")</MudChip>
-                            <MudChip Label="true" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default">@(job.ActionType == JobActionType.Simulate ? "simulate" : (job.ActionType == JobActionType.Copy ? "copy" : "move"))</MudChip>
-                        </MudChipSet>
-                    </div>
+                    <MudChip Label="true" Size="Size.Small" Color="@(job.IsEnabled ? Color.Success : Color.Error)">@(job.IsEnabled ? "enabled" : "disabled")</MudChip>
+
+                    <MudText Typo="Typo.h6">@job.Name</MudText>
+
+                    <MudText Typo="Typo.caption" Align="Align.Right" Style="width: 100%">Last executed on: @job.LastExecutedOn.ToString("yyyy.MM.dd HH:mm")</MudText>
                 </TitleContent>
                 <ChildContent>
-                    <MudCard Elevation="0">
-                        <MudCardContent>
-                            <MudText Typo="Typo.h5">Old Paint</MudText>
-                            <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
-                            <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
-                        </MudCardContent>
+                    <MudCard>
+                        <EditForm Model="@job">
+                            <FluentValidationValidator />
+                            <ValidationSummary />
+                            <MudCardContent>
+                                <MudTextField @bind-Value="job.Name"
+                                      For="@(() => job.Name)"
+                                      Immediate="true"
+                                      Label="Job name" />
+
+                                <MudTextField @bind-Value="job.Options.SourceFolder"
+                                      For="@(() => job.Options.SourceFolder)"
+                                      Immediate="true"
+                                      Label="Source folder" />
+
+                                <MudTextField @bind-Value="job.Options.DestinationFolder"
+                                      For="@(() => job.Options.DestinationFolder)"
+                                      Immediate="true"
+                                      Label="Destination folder" />
+
+                                <MudTextField @bind-Value="job.Options.FormatPattern"
+                                      For="@(() => job.Options.FormatPattern)"
+                                      Immediate="true"
+                                      Label="Format pattern" />
+
+                                <MudSwitch @bind-Checked="job.IsEnabled" Color="Color.Success">@(job.IsEnabled ? "Enabled" : "Disabled")</MudSwitch>
+                            </MudCardContent>
+                        </EditForm>
                         <MudCardActions>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Error" Class="ml-auto" OnClick="@(async () => await Delete(job))">Delete</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Error" Class="ml-auto" OnClick="@(async () => await Delete(job))">Delete</MudButton>
                         </MudCardActions>
                     </MudCard>
                 </ChildContent>

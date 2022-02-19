@@ -12,7 +12,7 @@ namespace renamee.Shared.Validators
                 .Must(options => Exist(options.SourceFolder))
                 .WithMessage("Please provide a valid source folder")
                 .Must(options => !string.IsNullOrEmpty(options.DestinationFolder))
-                .Must(options => Exist(options.DestinationFolder))
+                //.Must(options => Exist(options.DestinationFolder))
                 .WithMessage("Please provide a valid destination folder")
                 .Must(options => DestinationIsNotUnderSourceFolder(options.SourceFolder, options.DestinationFolder))
                 .WithMessage("The destination folder cannot be under source folder");

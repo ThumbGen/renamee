@@ -22,7 +22,7 @@ namespace renamee.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(JobDto job)
+        public async Task<IActionResult> Put([FromBody]JobDto job)
         {
             if (!ModelState.IsValid)
             { 
@@ -32,14 +32,15 @@ namespace renamee.Server.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task Delete(Guid jobId)
+        [HttpDelete("{jobId:guid}")]
+        public async Task<IActionResult> Delete(Guid jobId)
         {
             await jobsRepository.Delete(jobId);
+            return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(JobDto job)
+        public async Task<IActionResult> Create([FromBody]JobDto job)
         {
             if (!ModelState.IsValid)
             {

@@ -1,12 +1,16 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
 using renamee.Client;
+using renamee.Shared.Validators;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
+
+builder.Services.AddValidatorsFromAssemblyContaining<JobValidator>(ServiceLifetime.Transient);
 
 builder.Services.AddMudServices();
 builder.Services.AddMudBlazorDialog();
