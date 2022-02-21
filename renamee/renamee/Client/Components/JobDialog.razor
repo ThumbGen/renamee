@@ -1,0 +1,61 @@
+﻿@using renamee.Shared.Models
+@using renamee.Client.Helpers
+
+<MudDialog>
+    <DialogContent>
+        <EditForm Model="@Job">
+            <FluentValidationValidator />
+            <ValidationSummary />
+            <MudCardContent>
+                <MudTextField @bind-Value="Job.Name"
+                              For="@(() => Job.Name)"
+                              Immediate="true"
+                              Label="Job name" />
+
+                <MudTextField @bind-Value="Job.Options.SourceFolder"
+                              For="@(() => Job.Options.SourceFolder)"
+                              Immediate="true"
+                              Label="Source folder" />
+
+                <MudTextField @bind-Value="Job.Options.DestinationFolder"
+                              For="@(() => Job.Options.DestinationFolder)"
+                              Immediate="true"
+                              Label="Destination folder" />
+
+                <MudTextField @bind-Value="Job.Options.FormatPattern"
+                              For="@(() => Job.Options.FormatPattern)"
+                              Immediate="true"
+                              Label="Format pattern" />
+                <MudText Typo="Typo.caption">E.g. @Job.DemoFormat()</MudText>
+            </MudCardContent>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Success" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public JobDto Job { get; set; } = new JobDto();
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void Save()
+    {
+        MudDialog.Close(DialogResult.Ok(Job));
+    }
+}

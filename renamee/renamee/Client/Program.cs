@@ -20,9 +20,9 @@ builder.Services.AddMudBlazorSnackbar(config =>
     config.PreventDuplicates = false;
     config.NewestOnTop = false;
     config.ShowCloseIcon = false;
-    config.VisibleStateDuration = 3000;
-    config.HideTransitionDuration = 500;
-    config.ShowTransitionDuration = 500;
+    config.VisibleStateDuration = 5000;
+    config.HideTransitionDuration = 200;
+    config.ShowTransitionDuration = 200;
     config.SnackbarVariant = Variant.Filled;
 });
 builder.Services.AddMudBlazorResizeListener();

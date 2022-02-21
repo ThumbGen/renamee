@@ -16,12 +16,15 @@ namespace renamee.Server.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IEnumerable<JobDto>> Get()
         {
             return await jobsRepository.GetAll();
         }
 
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
         public async Task<IActionResult> Put([FromBody]JobDto job)
         {
             if (!ModelState.IsValid)
@@ -33,6 +36,7 @@ namespace renamee.Server.Controllers
         }
 
         [HttpDelete("{jobId:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Delete(Guid jobId)
         {
             await jobsRepository.Delete(jobId);
@@ -40,6 +44,8 @@ namespace renamee.Server.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
         public async Task<IActionResult> Create([FromBody]JobDto job)
         {
             if (!ModelState.IsValid)

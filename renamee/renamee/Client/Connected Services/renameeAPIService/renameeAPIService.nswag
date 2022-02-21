@@ -43,7 +43,8 @@
       "className": "{controller}Client",
       "operationGenerationMode": "SingleClientFromPathSegments",
       "additionalNamespaceUsages": [
-        "renamee.Shared.Models"
+        "renamee.Shared.Models",
+        "Microsoft.AspNetCore.Mvc"
       ],
       "additionalContractNamespaceUsages": [
         "renamee.Shared.Models"

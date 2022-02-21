@@ -1,9 +1,11 @@
 ﻿@page "/jobs"
 @using renamee.Shared.Models;
+@using renamee.Client.Components;
 
 <PageTitle>Jobs</PageTitle>
 
-<MudText Typo="Typo.h4" Class="ml-4 mt-4">Jobs</MudText>
+<MudText Typo="Typo.h4" Class="ml-5 mt-6" Style="display: inline-block">Jobs</MudText>
+<MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Size="Size.Small" Class="ml-5 mb-3" OnClick="@(async () => await Add())"/>
 
 @if (jobs == null)
 {
@@ -23,43 +25,28 @@ else
                     <MudText Typo="Typo.caption" Align="Align.Right" Style="width: 100%">Last executed on: @job.LastExecutedOn.ToString("yyyy.MM.dd HH:mm")</MudText>
                 </TitleContent>
                 <ChildContent>
-                    <MudCard>
-                        <EditForm Model="@job">
-                            <FluentValidationValidator />
-                            <ValidationSummary />
-                            <MudCardContent>
-                                <MudTextField @bind-Value="job.Name"
-                                      For="@(() => job.Name)"
-                                      Immediate="true"
-                                      Label="Job name" />
 
-                                <MudTextField @bind-Value="job.Options.SourceFolder"
-                                      For="@(() => job.Options.SourceFolder)"
-                                      Immediate="true"
-                                      Label="Source folder" />
+                    <JobSummary Job="@job" />
 
-                                <MudTextField @bind-Value="job.Options.DestinationFolder"
-                                      For="@(() => job.Options.DestinationFolder)"
-                                      Immediate="true"
-                                      Label="Destination folder" />
+                    <div class="mt-4">
+                        <MudSwitch 
+                            @bind-Checked="@job.IsEnabled" 
+                            @onclick="() => OnIsEnabledChanged(job)"
+                            Color="Color.Success">@(job.IsEnabled ? "Enabled" : "Disabled")</MudSwitch>
 
-                                <MudTextField @bind-Value="job.Options.FormatPattern"
-                                      For="@(() => job.Options.FormatPattern)"
-                                      Immediate="true"
-                                      Label="Format pattern" />
+                    </div>
 
-                                <MudSwitch @bind-Checked="job.IsEnabled" Color="Color.Success">@(job.IsEnabled ? "Enabled" : "Disabled")</MudSwitch>
-                            </MudCardContent>
-                        </EditForm>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Filled" Color="Color.Error" Class="ml-auto" OnClick="@(async () => await Delete(job))">Delete</MudButton>
-                            <MudButton Variant="Variant.Filled" Color="Color.Error" Class="ml-auto" OnClick="@(async () => await Delete(job))">Delete</MudButton>
-                        </MudCardActions>
-                    </MudCard>
+                    <div Class="mt-4">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="@(async () => await Edit(job))" Class="">Edit</MudButton>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await Delete(job))" Class="ml-2">Delete</MudButton>
+                    </div>
+
                 </ChildContent>
 
             </MudExpansionPanel>
         }
     </MudExpansionPanels>
 
+
 }
+

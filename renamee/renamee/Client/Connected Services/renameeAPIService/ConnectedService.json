@@ -47,7 +47,8 @@
       "ClassName": "{controller}Client",
       "OperationGenerationMode": 5,
       "AdditionalNamespaceUsages": [
-        "renamee.Shared.Models"
+        "renamee.Shared.Models",
+        "Microsoft.AspNetCore.Mvc"
       ],
       "AdditionalContractNamespaceUsages": [
         "renamee.Shared.Models"

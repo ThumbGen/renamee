@@ -1,6 +1,6 @@
 ﻿namespace renamee.Shared.Models
 {
-    public class JobDto
+    public record JobDto
     {
         public JobOptionsDto Options { get; set; } = new();
 
@@ -15,7 +15,7 @@
         public DateTimeOffset LastExecutedOn { get; set; } = DateTimeOffset.MinValue;
     }
 
-    public class JobOptionsDto
+    public record JobOptionsDto
     {
         public const string DefaultPattern = "YEAR|YEAR.MONTH.DAY|YEAR.MONTH.DAY-HOUR.MIN.SEC-ORG";
 

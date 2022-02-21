@@ -9,7 +9,7 @@ namespace renamee.Shared.Validators
         {
             RuleFor(options => options)
                 .Must(options => !string.IsNullOrEmpty(options.SourceFolder))
-                .Must(options => Exist(options.SourceFolder))
+                //.Must(options => Exist(options.SourceFolder))
                 .WithMessage("Please provide a valid source folder")
                 .Must(options => !string.IsNullOrEmpty(options.DestinationFolder))
                 //.Must(options => Exist(options.DestinationFolder))
