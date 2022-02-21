@@ -1,5 +1,4 @@
-﻿using renamee.Shared.DTOs;
-using renamee.Shared.Models;
+﻿using renamee.Shared.Models;
 
 namespace renamee.Shared.Helpers
 {

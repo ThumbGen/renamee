@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
-using renamee.Shared.DTOs;
 using renamee.Shared.Helpers;
 using renamee.Shared.Interfaces;
 using renamee.Shared.Validators;

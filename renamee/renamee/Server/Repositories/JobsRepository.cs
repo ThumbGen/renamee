@@ -1,7 +1,7 @@
 ﻿using JsonFlatFileDataStore;
 using Microsoft.Extensions.Options;
 using renamee.Server.Options;
-using renamee.Shared.DTOs;
+using renamee.Shared.Models;
 
 namespace renamee.Server.Repositories
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using renamee.Server.Repositories;
-using renamee.Shared.DTOs;
+using renamee.Shared.Models;
 
 namespace renamee.Server.Controllers
 {

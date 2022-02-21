@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using renamee.Shared.DTOs;
+using renamee.Shared.Models;
 
 namespace renamee.Shared.Validators
 {

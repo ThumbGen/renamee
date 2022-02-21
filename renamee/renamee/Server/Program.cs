@@ -36,6 +36,16 @@ builder.Services.AddSingleton<IProcessorService, ProcessorService>();
 builder.Services.AddHostedService<BackgroundProcessorService>();
 builder.Services.AddSingleton<IReverseGeocoder, BigDataCloudService>();
 
+// open api
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "renamee API",
+        Version = "v1"
+    });
+});
+
 // options
 builder.Services.Configure<ProcessorOptions>(builder.Configuration.GetSection(ProcessorOptions.Processor));
 builder.Services.Configure<RepositoryOptions>(builder.Configuration.GetSection(RepositoryOptions.Repository));
@@ -52,11 +62,17 @@ else
     app.UseExceptionHandler("/Error");
 }
 
+// open api
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "renamee API");
+});
+
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 
 app.MapRazorPages();
 app.MapControllers();

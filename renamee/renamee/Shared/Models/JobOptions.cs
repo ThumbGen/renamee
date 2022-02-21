@@ -1,6 +1,4 @@
-﻿using renamee.Shared.DTOs;
-
-namespace renamee.Shared.Models
+﻿namespace renamee.Shared.Models
 {
     public class JobOptions
     {
