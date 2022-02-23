@@ -37,6 +37,7 @@ namespace renamee.Shared.Models
             Name = job.Name;
             LastExecutedOn = job.LastExecutedOn;
             ActionType = job.ActionType;
+            IsEnabled = job.IsEnabled;
             Options.AssignFrom(job.Options);
         }
 

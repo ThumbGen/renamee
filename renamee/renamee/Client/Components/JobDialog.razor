@@ -11,7 +11,16 @@
                               For="@(() => Job.Name)"
                               Immediate="true"
                               Label="Job name" />
-
+                @*<MudRadioGroup @bind-SelectedOption="@Job.ActionType">
+                    <MudRadio Color="Color.Default" Option="@(JobActionType.Simulate)">Simulate</MudRadio>
+                    <MudRadio Color="Color.Success" Option="@(JobActionType.Copy)">Copy</MudRadio>
+                    <MudRadio Color="Color.Warning" Option="@(JobActionType.Move)">Move</MudRadio>
+                    </MudRadioGroup>*@
+                <MudSelect Margin="Margin.Dense" T="JobActionType" Label="Action type" Variant="Variant.Text" @bind-Value="@Job.ActionType">
+                    <MudSelectItem Value="@(JobActionType.Simulate)">Simulate</MudSelectItem>
+                    <MudSelectItem Value="@(JobActionType.Copy)">Copy</MudSelectItem>
+                    <MudSelectItem Value="@(JobActionType.Move)">Move</MudSelectItem>
+                </MudSelect>
                 <MudTextField @bind-Value="Job.Options.SourceFolder"
                               For="@(() => Job.Options.SourceFolder)"
                               Immediate="true"
@@ -44,7 +53,7 @@
     {
         if (firstRender)
         {
-            
+
         }
         return base.OnAfterRenderAsync(firstRender);
     }

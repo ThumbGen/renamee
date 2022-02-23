@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using renamee.Server.Repositories;
+using renamee.Server.Services;
+using renamee.Shared.Helpers;
 using renamee.Shared.Models;
 
 namespace renamee.Server.Controllers
@@ -8,18 +9,18 @@ namespace renamee.Server.Controllers
     [Route("api/[controller]")]
     public class JobsController : ControllerBase
     {
-        private readonly IJobsRepository jobsRepository;
+        private readonly IJobsService jobsService;
 
-        public JobsController(IJobsRepository jobsRepository)
+        public JobsController(IJobsService jobsService)
         {
-            this.jobsRepository = jobsRepository;
+            this.jobsService = jobsService;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IEnumerable<JobDto>> Get()
         {
-            return await jobsRepository.GetAll();
+            return (await jobsService.GetAll()).Select(x => x.ToDto());
         }
 
         [HttpPut]
@@ -31,7 +32,7 @@ namespace renamee.Server.Controllers
             { 
                 return new StatusCodeResult(412);
             }
-            await jobsRepository.AddOrUpdate(job);
+            await jobsService.AddOrUpdate(jobsService.PopulateJob(job));
             return NoContent();
         }
 
@@ -39,7 +40,7 @@ namespace renamee.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Delete(Guid jobId)
         {
-            await jobsRepository.Delete(jobId);
+            await jobsService.Delete(jobId);
             return Ok();
         }
 
@@ -52,8 +53,10 @@ namespace renamee.Server.Controllers
             {
                 return new StatusCodeResult(412);
             }
-            await jobsRepository.AddOrUpdate(job);
+            await jobsService.AddOrUpdate(jobsService.PopulateJob(job));
             return NoContent();
         }
+
+       
     }
 }

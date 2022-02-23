@@ -31,6 +31,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddValidatorsFromAssemblyContaining<JobValidator>(ServiceLifetime.Transient);
 builder.Services.AddTransient<Job>();
 builder.Services.AddSingleton<IJobsRepository, JobsRepository>();
+builder.Services.AddSingleton<IJobsService, JobsService>();
 builder.Services.AddSingleton<ISettingsRepository, SettingsRepository>();
 builder.Services.AddSingleton<IProcessorService, ProcessorService>();
 builder.Services.AddHostedService<BackgroundProcessorService>();

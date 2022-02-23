@@ -8,7 +8,7 @@
                    NoHeader="false"
                    Position="DialogPosition.Center">
 </MudDialogProvider>
-<MudSnackbarProvider  />
+<MudSnackbarProvider />
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -16,8 +16,14 @@
                        Color="Color.Inherit"
                        Edge="Edge.Start"
                        OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h5"
-                 Class="ml-3">renamee</MudText>
+        @*<MudText Typo="Typo.h5"
+            Class="ml-3">renamee</MudText>*@
+        <MudImage Src="/Assets/renamee-logos_white.png"
+                  Alt="the renamee logo"
+                  Elevation="0"
+                  Class="rounded-lg"
+                  ObjectPosition="ObjectPosition.Left"
+                  Height="180"></MudImage>
         <MudSpacer />
         <MudTooltip Text="@(isDarkMode ? "Switch to light theme" : "Switch to dark theme")">
             <MudIconButton Icon="@(isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
