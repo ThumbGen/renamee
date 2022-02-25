@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using renamee.Client.Components;
+using renamee.Shared.Helpers;
 using renamee.Shared.Models;
+using renamee.Shared.Services;
 
 namespace renamee.Client.Pages
 {
@@ -13,8 +15,10 @@ namespace renamee.Client.Pages
         private ISnackbar Snackbar { get; set; }
         [Inject]
         private Client Client { get; set; }
+        [Inject]
+        private JobsFactory JobsFactory { get; set; }
 
-        private IEnumerable<JobDto>? jobs;
+        private List<IJob> jobs;
 
         protected override async Task OnInitializedAsync()
         {
@@ -25,21 +29,29 @@ namespace renamee.Client.Pages
         {
             try
             {
-                jobs = (await Client.ApiJobsGetAsync()).OrderBy(x => x.Name);
+                jobs = (await Client.ApiJobsGetAsync())
+                    .OrderBy(dto => dto.Name)
+                    .Select(dto =>
+                    {
+                        var j = JobsFactory.Get<IJob>();
+                        j.FromDto(dto);
+                        return j;
+                    })
+                    .ToList();
             }
             catch (Exception ex)
             {
                 Snackbar.Add($"Could not load the jobs. {ex.Message}", Severity.Error);
-                jobs = new List<JobDto>();
+                jobs = new List<IJob>();
             }
         }
 
-        private async Task OnIsEnabledChanged(JobDto job)
+        private async Task OnIsEnabledChanged(IJob job)
         {
             job.IsEnabled = !job.IsEnabled;
             try
             {
-                await Client.ApiJobsPutAsync(job);
+                await Client.ApiJobsPutAsync(job.ToDto());
                 var str = job.IsEnabled ? "enabled" : "disabled";
                 Snackbar.Add($"Job was {str} successfully.", Severity.Success);
             }
@@ -49,7 +61,7 @@ namespace renamee.Client.Pages
             }
         }
 
-        private async Task Edit(JobDto job)
+        private async Task Edit(IJob job)
         {
             var parameters = new DialogParameters { ["Job"] = job };
             var dialog = DialogService.Show<JobDialog>("New job", parameters, new DialogOptions
@@ -62,7 +74,7 @@ namespace renamee.Client.Pages
             {
                 try
                 {
-                    await Client.ApiJobsPutAsync(job);
+                    await Client.ApiJobsPutAsync(job.ToDto());
                     Snackbar.Add($"Job was updated successfully.", Severity.Success);
                 }
                 catch (Exception ex)
@@ -76,13 +88,11 @@ namespace renamee.Client.Pages
 
         private async Task Add()
         {
-            var job = new JobDto
-            {
-                JobId = Guid.NewGuid(),
-                Name = string.Empty
-            };
+            var job = JobsFactory.Get<IJob>();
+            job.Name = string.Empty;
+
             var parameters = new DialogParameters { ["Job"] = job };
-            var dialog = DialogService.Show<JobDialog>("Edit job", parameters, new DialogOptions
+            var dialog = DialogService.Show<JobDialog>("Add job", parameters, new DialogOptions
             {
                 CloseOnEscapeKey = true,
                 MaxWidth = MaxWidth.Large
@@ -92,7 +102,7 @@ namespace renamee.Client.Pages
             {
                 try
                 {
-                    await Client.ApiJobsPostAsync(job);
+                    await Client.ApiJobsPostAsync(job.ToDto());
                     Snackbar.Add($"Job was added successfully.", Severity.Success);
                 }
                 catch (Exception ex)
@@ -100,11 +110,11 @@ namespace renamee.Client.Pages
                     Snackbar.Add($"Could not add the job. {ex.Message}", Severity.Error);
                 }
             }
-            
+
             await Refresh();
         }
 
-        private async Task Delete(JobDto job)
+        private async Task Delete(IJob job)
         {
             bool? result = await DialogService.ShowMessageBox
                 (

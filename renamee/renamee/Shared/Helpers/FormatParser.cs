@@ -44,7 +44,7 @@ namespace renamee.Shared.Helpers
             return true;
         }
 
-        public static bool TryParse(DateTimeOffset dateTimeOffset, string format, string originalFilename, out string result, GeocodingData? geocodingData = null)
+        public static bool TryParse(DateTimeOffset dateTimeOffset, string format, string originalFilename, out string result, GeocodingData geocodingData = null)
         {
             if (string.IsNullOrEmpty(format)) throw new ArgumentNullException(nameof(format));
             if (string.IsNullOrEmpty(originalFilename)) throw new ArgumentNullException(nameof(originalFilename));

@@ -18,18 +18,18 @@
                        OnClick="@((e) => DrawerToggle())" />
         @*<MudText Typo="Typo.h5"
             Class="ml-3">renamee</MudText>*@
-        <MudImage Src="/Assets/renamee-logos_white.png"
+        <MudImage Src="/Assets/renamee-logos_white_slim.png"
                   Alt="the renamee logo"
                   Elevation="0"
-                  Class="rounded-lg"
                   ObjectPosition="ObjectPosition.Left"
-                  Height="180"></MudImage>
+                  Height="32"></MudImage>
         <MudSpacer />
         <MudTooltip Text="@(isDarkMode ? "Switch to light theme" : "Switch to dark theme")">
             <MudIconButton Icon="@(isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
                            Color="Color.Inherit"
                            Edge="Edge.End"
                            OnClick="@((e) => ToggleDarkMode())" />
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
         </MudTooltip>
     </MudAppBar>
     <MudDrawer @bind-Open="@isDrawerOpen"

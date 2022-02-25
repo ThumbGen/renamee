@@ -5,7 +5,9 @@ using renamee.Server.Repositories;
 using renamee.Server.Services;
 using renamee.Shared.Interfaces;
 using renamee.Shared.Models;
+using renamee.Shared.Services;
 using renamee.Shared.Validators;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.ConfigureServices(services =>
@@ -29,7 +31,10 @@ builder.Services.AddRazorPages();
 
 // services
 builder.Services.AddValidatorsFromAssemblyContaining<JobValidator>(ServiceLifetime.Transient);
-builder.Services.AddTransient<Job>();
+
+builder.Services.AddTransient<IJob, Job>();
+builder.Services.AddTransient<IRunnableJob, RunnableJob>();
+builder.Services.AddSingleton<JobsFactory>();
 builder.Services.AddSingleton<IJobsRepository, JobsRepository>();
 builder.Services.AddSingleton<IJobsService, JobsService>();
 builder.Services.AddSingleton<ISettingsRepository, SettingsRepository>();
@@ -51,7 +56,15 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.Configure<ProcessorOptions>(builder.Configuration.GetSection(ProcessorOptions.Processor));
 builder.Services.Configure<RepositoryOptions>(builder.Configuration.GetSection(RepositoryOptions.Repository));
 
+builder.Host.UseSerilog();
+
+builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+
 var app = builder.Build();
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(app.Configuration)
+    .CreateLogger();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

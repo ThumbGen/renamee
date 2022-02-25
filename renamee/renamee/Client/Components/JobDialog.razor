@@ -1,9 +1,8 @@
 ﻿@using renamee.Shared.Models
-@using renamee.Client.Helpers
 
 <MudDialog>
     <DialogContent>
-        <EditForm Model="@Job">
+        <EditForm EditContext="@editContext">
             <FluentValidationValidator />
             <ValidationSummary />
             <MudCardContent>
@@ -11,12 +10,7 @@
                               For="@(() => Job.Name)"
                               Immediate="true"
                               Label="Job name" />
-                @*<MudRadioGroup @bind-SelectedOption="@Job.ActionType">
-                    <MudRadio Color="Color.Default" Option="@(JobActionType.Simulate)">Simulate</MudRadio>
-                    <MudRadio Color="Color.Success" Option="@(JobActionType.Copy)">Copy</MudRadio>
-                    <MudRadio Color="Color.Warning" Option="@(JobActionType.Move)">Move</MudRadio>
-                    </MudRadioGroup>*@
-                <MudSelect Margin="Margin.Dense" T="JobActionType" Label="Action type" Variant="Variant.Text" @bind-Value="@Job.ActionType">
+                <MudSelect Margin="Margin.Dense" T="JobActionType" Label="Action type" Variant="Variant.Text" @bind-Value="@Job.ActionType" Class="mt-2">
                     <MudSelectItem Value="@(JobActionType.Simulate)">Simulate</MudSelectItem>
                     <MudSelectItem Value="@(JobActionType.Copy)">Copy</MudSelectItem>
                     <MudSelectItem Value="@(JobActionType.Move)">Move</MudSelectItem>
@@ -35,19 +29,28 @@
                               For="@(() => Job.Options.FormatPattern)"
                               Immediate="true"
                               Label="Format pattern" />
-                <MudText Typo="Typo.caption">E.g. @Job.DemoFormat()</MudText>
+                <MudText Typo="Typo.caption">E.g. @Job.GetDemoFormat()</MudText>
             </MudCardContent>
         </EditForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Success" OnClick="Save">Save</MudButton>
+        <MudButton Color="Color.Success" OnClick="Save" Disabled="@(!editContext.IsModified() || !editContext.Validate())" ButtonType="ButtonType.Submit">Save</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public JobDto Job { get; set; } = new JobDto();
+    [Parameter] public IJob Job { get; set; }
+
+    private EditContext editContext;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(Job);
+
+        base.OnInitialized();
+    }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -66,5 +69,10 @@
     private void Save()
     {
         MudDialog.Close(DialogResult.Ok(Job));
+    }
+
+    private void OnValidSubmit(EditContext context)
+    {
+        StateHasChanged();
     }
 }

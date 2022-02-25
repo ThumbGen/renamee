@@ -4,7 +4,7 @@ namespace renamee.Shared.Helpers
 {
     public static class JobExtensions
     {
-        public static JobDto ToDto(this Job job)
+        public static JobDto ToDto(this IJob job)
         {
             return new JobDto
             {
@@ -22,7 +22,7 @@ namespace renamee.Shared.Helpers
             };
         }
 
-        public static void FromDto(this Job job, JobDto dto)
+        public static void FromDto(this IJob job, JobDto dto)
         {
             job.AssignFrom(dto);
         }

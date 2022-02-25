@@ -3,7 +3,7 @@ using renamee.Shared.Models;
 
 namespace renamee.Shared.Validators
 {
-    public class JobOptionsValidator : AbstractValidator<JobOptionsDto>
+    public class JobOptionsValidator : AbstractValidator<JobOptions>
     {
         public JobOptionsValidator()
         {
@@ -16,7 +16,7 @@ namespace renamee.Shared.Validators
                 .WithMessage("Please provide a valid destination folder")
                 .Must(options => DestinationIsNotUnderSourceFolder(options.SourceFolder, options.DestinationFolder))
                 .WithMessage("The destination folder cannot be under source folder");
-            
+
             RuleFor(options => options.FormatPattern)
                 .NotNull()
                 .SetValidator(o => new FormatPatternValidator())
@@ -25,17 +25,21 @@ namespace renamee.Shared.Validators
 
         private static bool DestinationIsNotUnderSourceFolder(string source, string dest)
         {
-            if(string.IsNullOrEmpty(source) || string.IsNullOrEmpty(dest))
+            try
             {
-                return false;
+                if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(dest))
+                {
+                    return false;
+                }
+                var parentUri = new Uri(source.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar);
+                var childUri = new Uri(dest.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar);
+                if (parentUri == childUri || childUri.IsBaseOf(parentUri))
+                {
+                    return false;
+                }
+                return true;
             }
-            var parentUri = new Uri(source);
-            var childUri = new Uri(dest);
-            if (parentUri == childUri || childUri.IsBaseOf(parentUri))
-            {
-                return false;
-            }
-            return true;
+            catch { return false; }
         }
 
         protected static bool Exist(string folder)

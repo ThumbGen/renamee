@@ -52,7 +52,7 @@ namespace renamee.Server.Repositories
             }
         }
 
-        private static JobDto? Find(IDocumentCollection<JobDto> jobs, Guid jobId)
+        private static JobDto Find(IDocumentCollection<JobDto> jobs, Guid jobId)
         {
             return jobs.Find(x => x.JobId == jobId).SingleOrDefault();
         }

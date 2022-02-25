@@ -56,7 +56,5 @@ namespace renamee.Server.Controllers
             await jobsService.AddOrUpdate(jobsService.PopulateJob(job));
             return NoContent();
         }
-
-       
     }
 }

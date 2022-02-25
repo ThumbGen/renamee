@@ -3,7 +3,7 @@ using renamee.Shared.Models;
 
 namespace renamee.Shared.Validators
 {
-    public class JobValidator : AbstractValidator<JobDto>
+    public class JobValidator : AbstractValidator<Job>
     {
         public JobValidator()
         {

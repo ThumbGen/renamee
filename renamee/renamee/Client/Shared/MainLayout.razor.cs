@@ -9,7 +9,7 @@ namespace renamee.Client.Shared
         private bool isDarkMode = false;
         private MudThemeProvider mudThemeProvider;
 
-        public MudTheme MyCustomTheme = new MudTheme();
+        public MudTheme MyCustomTheme = new();
 
         //public MudTheme MyCustomTheme = new MudTheme()
         //{
@@ -30,6 +30,12 @@ namespace renamee.Client.Shared
         //        DrawerWidthRight = "300px"
         //    }
         //};
+
+        public MainLayout()
+        {
+            //MyCustomTheme.Palette.AppbarBackground = "#F3D503";
+            //MyCustomTheme.Palette.Primary = "#F3D503";
+        }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {

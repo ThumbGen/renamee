@@ -1,6 +1,7 @@
 ﻿using renamee.Server.Repositories;
 using renamee.Shared.Helpers;
 using renamee.Shared.Models;
+using renamee.Shared.Services;
 using System.Diagnostics;
 
 namespace renamee.Server.Services
@@ -14,38 +15,17 @@ namespace renamee.Server.Services
     {
         private readonly ILogger<ProcessorService> logger;
         private readonly IJobsRepository jobsRepository;
-        private readonly IServiceProvider serviceProvider;
+        private readonly JobsFactory jobsFactory;
 
-        public ProcessorService(ILogger<ProcessorService> logger, IJobsRepository jobsRepository, IServiceProvider serviceProvider)
+        public ProcessorService(ILogger<ProcessorService> logger, IJobsRepository jobsRepository, JobsFactory jobsFactory)
         {
             this.logger = logger;
             this.jobsRepository = jobsRepository;
-            this.serviceProvider = serviceProvider;
+            this.jobsFactory = jobsFactory;
         }
 
         public async Task Process()
         {
-            // TODO remove
-            if (!(await jobsRepository.GetAll()).Any())
-            {
-                var job = new JobDto
-                {
-                    JobId = Guid.Parse("bb1e5584-fcea-489c-b0b2-8b0fbfa39796"),
-                    Name = "demo job",
-                    ActionType = JobActionType.Copy,
-                    Options = new JobOptionsDto
-                    {
-                        SourceFolder = @"C:\renamee_input\",
-                        DestinationFolder = @"C:\renamee_output\"
-                    }
-                };
-                job.Options.SourceFolder = @"C:\renamee_input\";
-                job.Options.DestinationFolder = @"C:\renamee_output\";
-
-                await jobsRepository.AddOrUpdate(job);
-            }
-
-
             logger.LogInformation("Processing jobs...");
             var sw = new Stopwatch();
             sw.Start();
@@ -58,13 +38,14 @@ namespace renamee.Server.Services
                     continue;
                 }
 
-                var job = serviceProvider.GetService<Job>();
+                var job = jobsFactory.Get<IRunnableJob>();
                 if (job != null)
                 {
                     job.AssignFrom(jobEntity);
 
                     try
                     {
+                        logger.LogInformation($"\tProcessing job '{jobEntity.Name}'.");
                         await job.Run();
                         logger.LogInformation($"\tJob '{job.Name}' done in {sw.Elapsed:hh\\:mm\\:ss}");
 

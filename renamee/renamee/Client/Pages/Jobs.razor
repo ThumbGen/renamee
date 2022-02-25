@@ -7,7 +7,12 @@
 <PageTitle>Jobs</PageTitle>
 
 <MudText Typo="Typo.h4" Class="ml-5 mt-6" Style="display: inline-block">Jobs</MudText>
-<MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Size="Size.Small" Class="ml-5 mb-3" OnClick="@(async () => await Add())" />
+
+<MudFab StartIcon="@Icons.Material.Filled.Add"
+        Color="Color.Primary"
+        Size="Size.Large"
+        Class="ml-5 mb-3" OnClick="@(async () => await Add())"
+        Style="position: fixed !important;right: 20px; bottom: 20px" />
 
 @if (jobs == null)
 {
@@ -24,9 +29,10 @@ else
                         <MudChip Label="true" Size="Size.Small"
                          Color="@(job.IsEnabled ? Color.Success : Color.Error)">@(job.IsEnabled ? "enabled" : "disabled")</MudChip>
                         <MudChip Label="true" Size="Size.Small"
-                         Color="Color.Default">
-                            @(job.ActionType == JobActionType.Simulate ? "simulate" : (job.ActionType == JobActionType.Copy ? "copy    " : "move    "))
+                         Color="Color.Default">@(job.ActionType == JobActionType.Simulate ? "simulate" : (job.ActionType == JobActionType.Copy ? "copy" : "move"))
                         </MudChip>
+                        <MudChip Label="true" Size="Size.Small"
+                         Color="@(job.IsRunning? Color.Success : Color.Default)">@(job.IsRunning ? "running" : "idle")</MudChip><!-- update status with signalr -->
                     </span>
 
                     <MudText Typo="Typo.h6">@job.Name</MudText>

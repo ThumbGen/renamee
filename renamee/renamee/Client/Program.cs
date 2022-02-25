@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
 using renamee.Client;
+using renamee.Shared.Models;
+using renamee.Shared.Services;
 using renamee.Shared.Validators;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -29,5 +31,8 @@ builder.Services.AddMudBlazorResizeListener();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<Client>(sp => new Client(builder.HostEnvironment.BaseAddress, sp.GetService<HttpClient>()));
+builder.Services.AddTransient<IJob, Job>();
+builder.Services.AddSingleton<JobsFactory>();
 
 await builder.Build().RunAsync();
+
