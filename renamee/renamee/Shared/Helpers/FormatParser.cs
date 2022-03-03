@@ -1,5 +1,6 @@
 ﻿using renamee.Shared.Models;
 using System.Text.RegularExpressions;
+using renamee.Shared.Helpers;
 
 namespace renamee.Shared.Helpers
 {
@@ -59,7 +60,12 @@ namespace renamee.Shared.Helpers
             var foldersParts = format.Split(FolderSeparator);
             foreach (var folderPart in foldersParts)
             {
-                result += StoreDateTimeEntry(folderPart, originalFilename) + FolderSeparator;
+                var tmp = StoreDateTimeEntry(folderPart, originalFilename);
+                if(string.IsNullOrWhiteSpace(tmp))
+                {
+                    tmp = "unknown";
+                }
+                result += tmp + FolderSeparator;
             }
 
             result = result.TrimEnd(FolderSeparator);

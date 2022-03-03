@@ -40,7 +40,8 @@ builder.Services.AddSingleton<IJobsService, JobsService>();
 builder.Services.AddSingleton<ISettingsRepository, SettingsRepository>();
 builder.Services.AddSingleton<IProcessorService, ProcessorService>();
 builder.Services.AddHostedService<BackgroundProcessorService>();
-builder.Services.AddSingleton<IReverseGeocoder, BigDataCloudService>();
+//builder.Services.AddSingleton<IReverseGeocoder, BigDataCloudService>();
+builder.Services.AddSingleton<IReverseGeocoder, GeoNamesService>();
 
 // open api
 builder.Services.AddSwaggerGen(c =>

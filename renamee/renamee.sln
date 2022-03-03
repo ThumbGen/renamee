@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "renamee.Shared", "renamee\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "renamee.tests", "renamee.tests\renamee.tests.csproj", "{95557D20-2001-4EA1-B2A9-A4FD0E457464}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseGeocoder", "ReverseGeocoder\ReverseGeocoder.csproj", "{CD595E81-DDC0-4C11-A2EA-A893D0E44798}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseGeocoder.Tests", "ReverseGeocoder.Tests\ReverseGeocoder.Tests.csproj", "{94C85F50-0569-403E-820D-7D4AB3ECE6F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{95557D20-2001-4EA1-B2A9-A4FD0E457464}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95557D20-2001-4EA1-B2A9-A4FD0E457464}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95557D20-2001-4EA1-B2A9-A4FD0E457464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD595E81-DDC0-4C11-A2EA-A893D0E44798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD595E81-DDC0-4C11-A2EA-A893D0E44798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD595E81-DDC0-4C11-A2EA-A893D0E44798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD595E81-DDC0-4C11-A2EA-A893D0E44798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94C85F50-0569-403E-820D-7D4AB3ECE6F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C85F50-0569-403E-820D-7D4AB3ECE6F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C85F50-0569-403E-820D-7D4AB3ECE6F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C85F50-0569-403E-820D-7D4AB3ECE6F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

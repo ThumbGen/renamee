@@ -8,5 +8,12 @@ namespace renamee.Shared.Helpers
             if (string.IsNullOrWhiteSpace(directoryPath)) return directoryPath;
             return directoryPath.Replace('\\', '/').TrimEnd('/') + '/';
         }
+
+        static char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+
+        public static bool IsValidFileName(this string fileName)
+        {
+            return (fileName.IndexOfAny(invalidFileNameChars) >= 0);
+        }
     }
 }
