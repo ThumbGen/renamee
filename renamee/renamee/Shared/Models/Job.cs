@@ -12,6 +12,7 @@ namespace renamee.Shared.Models
         bool IsEnabled { get; set; }
         bool IsRunning { get; }
         DateTimeOffset LastExecutedOn { get; set; }
+        DateTimeOffset LastProcessedFileModifiedOn { get; set; }
         void AssignFrom(JobDto job);
         void Reset();
         string GetDemoFormat();
@@ -36,6 +37,8 @@ namespace renamee.Shared.Models
 
         public DateTimeOffset LastExecutedOn { get; set; } = DateTimeOffset.MinValue;
 
+        public DateTimeOffset LastProcessedFileModifiedOn { get; set; } = DateTimeOffset.MinValue;
+
         public Job(ILogger<Job> logger)
         {
             this.logger = logger;
@@ -46,6 +49,7 @@ namespace renamee.Shared.Models
             JobId = job.JobId;
             Name = job.Name;
             LastExecutedOn = job.LastExecutedOn;
+            LastProcessedFileModifiedOn = job.LastProcessedFileModifiedOn;
             ActionType = job.ActionType;
             IsEnabled = job.IsEnabled;
             Options.AssignFrom(job.Options);
@@ -53,7 +57,7 @@ namespace renamee.Shared.Models
 
         public void Reset()
         {
-            LastExecutedOn = DateTimeOffset.MinValue;
+            LastProcessedFileModifiedOn = DateTimeOffset.MinValue;
         }
 
         public string GetDemoFormat()

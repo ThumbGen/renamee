@@ -26,7 +26,9 @@ namespace renamee.Shared.Models
             if (IsRunning)
             {
                 logger.LogWarning($"Job '{Name}' already running.");
+                return;
             }
+
             IsRunning = true;
             try
             {
@@ -41,8 +43,8 @@ namespace renamee.Shared.Models
                 var files = Directory
                     .GetFileSystemEntries(Options.SourceFolder, "*", SearchOption.AllDirectories)
                     .Where(file => MediaInformation.MediaExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
-                    //.Where(file => new FileInfo(file).LastWriteTimeUtc > this.LastExecutedOn) // TODO refine this
-                    ?? Enumerable.Empty<string>();
+                    .Where(file => new FileInfo(file).LastWriteTimeUtc > this.LastProcessedFileModifiedOn)
+                    .ToList(); // important, as enumerating will be affected by the changing 'where' condition
 
                 //TODO introduce parallelism and process more files in parallel
                 foreach (var file in files)
@@ -79,7 +81,7 @@ namespace renamee.Shared.Models
                 // if the date is valid and can be parsed correctly...
                 if (date.HasValue && !date.Value.Equals(default) && FormatParser.TryParse(date.Value, this.Options.FormatPattern, filename, out string finalSegments, geocodingData))
                 {
-                    var coercedFinalSegments = finalSegments.Replace('|', Path.DirectorySeparatorChar);
+                    var coercedFinalSegments = finalSegments.Replace('|', '/');
                     logger.LogDebug($"Processing '{filename}' into '{coercedFinalSegments + extension}'");
 
                     var targetPath = Path.Combine(Options.DestinationFolder, coercedFinalSegments + extension);
@@ -94,9 +96,11 @@ namespace renamee.Shared.Models
                             break;
                         case JobActionType.Copy:
                             File.Copy(filePath, targetPath, true);
+                            LastProcessedFileModifiedOn = new FileInfo(filePath).LastWriteTime;
                             break;
                         case JobActionType.Move:
                             File.Move(filePath, targetPath, true);
+                            LastProcessedFileModifiedOn = new FileInfo(filePath).LastWriteTime;
                             break;
                     }
 

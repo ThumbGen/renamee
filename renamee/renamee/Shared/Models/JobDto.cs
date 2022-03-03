@@ -1,6 +1,6 @@
 ﻿namespace renamee.Shared.Models
 {
-    public record JobDto
+    public record JobDto()
     {
         public JobOptionsDto Options { get; set; } = new();
 
@@ -13,6 +13,8 @@
         public bool IsEnabled { get; set; } = false;
 
         public DateTimeOffset LastExecutedOn { get; set; } = DateTimeOffset.MinValue;
+
+        public DateTimeOffset LastProcessedFileModifiedOn { get; set; } = DateTimeOffset.MinValue;
     }
 
     public record JobOptionsDto

@@ -54,17 +54,19 @@ namespace renamee.Client
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+        /// <summary>Get all jobs</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<JobDto>> ApiJobsGetAsync()
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<JobDto>> GetJobsAsync()
         {
-            return ApiJobsGetAsync(System.Threading.CancellationToken.None);
+            return GetJobsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get all jobs</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<JobDto>> ApiJobsGetAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<JobDto>> GetJobsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Jobs");
@@ -128,17 +130,19 @@ namespace renamee.Client
             }
         }
     
+        /// <summary>Upsert the specified job</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiJobsPutAsync(JobDto body)
+        public System.Threading.Tasks.Task UpsertJobAsync(JobDto body)
         {
-            return ApiJobsPutAsync(body, System.Threading.CancellationToken.None);
+            return UpsertJobAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Upsert the specified job</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiJobsPutAsync(JobDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task UpsertJobAsync(JobDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Jobs");
@@ -209,17 +213,19 @@ namespace renamee.Client
             }
         }
     
+        /// <summary>Create a new job</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiJobsPostAsync(JobDto body)
+        public System.Threading.Tasks.Task CreateJobAsync(JobDto body)
         {
-            return ApiJobsPostAsync(body, System.Threading.CancellationToken.None);
+            return CreateJobAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Create a new job</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiJobsPostAsync(JobDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task CreateJobAsync(JobDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Jobs");
@@ -290,17 +296,19 @@ namespace renamee.Client
             }
         }
     
+        /// <summary>Delete the specified job</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiJobsDeleteAsync(System.Guid jobId)
+        public System.Threading.Tasks.Task DeleteJobAsync(System.Guid jobId)
         {
-            return ApiJobsDeleteAsync(jobId, System.Threading.CancellationToken.None);
+            return DeleteJobAsync(jobId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Delete the specified job</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiJobsDeleteAsync(System.Guid jobId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteJobAsync(System.Guid jobId, System.Threading.CancellationToken cancellationToken)
         {
             if (jobId == null)
                 throw new System.ArgumentNullException("jobId");
@@ -362,17 +370,92 @@ namespace renamee.Client
             }
         }
     
+        /// <summary>Reset the specified job</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Settings> ApiSettingsGetAsync()
+        public System.Threading.Tasks.Task ResetJobAsync(System.Guid jobId)
         {
-            return ApiSettingsGetAsync(System.Threading.CancellationToken.None);
+            return ResetJobAsync(jobId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Reset the specified job</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task ResetJobAsync(System.Guid jobId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (jobId == null)
+                throw new System.ArgumentNullException("jobId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Jobs/{jobId}");
+            urlBuilder_.Replace("{jobId}", System.Uri.EscapeDataString(ConvertToString(jobId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+    
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+    
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Settings> SettingsGETAsync()
+        {
+            return SettingsGETAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Settings> ApiSettingsGetAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Settings> SettingsGETAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Settings");
@@ -438,15 +521,15 @@ namespace renamee.Client
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiSettingsPutAsync(Settings body)
+        public System.Threading.Tasks.Task SettingsPUTAsync(Settings body)
         {
-            return ApiSettingsPutAsync(body, System.Threading.CancellationToken.None);
+            return SettingsPUTAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiSettingsPutAsync(Settings body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task SettingsPUTAsync(Settings body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Settings");

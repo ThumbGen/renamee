@@ -29,7 +29,7 @@ namespace renamee.Client.Pages
         {
             try
             {
-                jobs = (await Client.ApiJobsGetAsync())
+                jobs = (await Client.GetJobsAsync())
                     .OrderBy(dto => dto.Name)
                     .Select(dto =>
                     {
@@ -51,7 +51,7 @@ namespace renamee.Client.Pages
             job.IsEnabled = !job.IsEnabled;
             try
             {
-                await Client.ApiJobsPutAsync(job.ToDto());
+                await Client.UpsertJobAsync(job.ToDto());
                 var str = job.IsEnabled ? "enabled" : "disabled";
                 Snackbar.Add($"Job was {str} successfully.", Severity.Success);
             }
@@ -74,7 +74,7 @@ namespace renamee.Client.Pages
             {
                 try
                 {
-                    await Client.ApiJobsPutAsync(job.ToDto());
+                    await Client.UpsertJobAsync(job.ToDto());
                     Snackbar.Add($"Job was updated successfully.", Severity.Success);
                 }
                 catch (Exception ex)
@@ -102,7 +102,7 @@ namespace renamee.Client.Pages
             {
                 try
                 {
-                    await Client.ApiJobsPostAsync(job.ToDto());
+                    await Client.CreateJobAsync(job.ToDto());
                     Snackbar.Add($"Job was added successfully.", Severity.Success);
                 }
                 catch (Exception ex)
@@ -127,13 +127,38 @@ namespace renamee.Client.Pages
                 // do delete
                 try
                 {
-                    await Client.ApiJobsDeleteAsync(job.JobId);
+                    await Client.DeleteJobAsync(job.JobId);
                     Snackbar.Add($"Job was deleted successfully.", Severity.Success);
                     await Refresh();
                 }
                 catch (Exception ex)
                 {
                     Snackbar.Add($"Could not delete the job. {ex.Message}", Severity.Error);
+                }
+            }
+            StateHasChanged();
+        }
+
+        private async Task Reset(IJob job)
+        {
+            bool? result = await DialogService.ShowMessageBox
+               (
+                   "Confirmation",
+                   $"Are you sure you want to reset the '{job.Name}' job?",
+                   yesText: "Reset", cancelText: "Cancel");
+
+            if (result.HasValue && result.Value)
+            {
+                // do reset
+                try
+                {
+                    await Client.ResetJobAsync(job.JobId);
+                    Snackbar.Add($"Job was reset successfully.", Severity.Success);
+                    await Refresh();
+                }
+                catch (Exception ex)
+                {
+                    Snackbar.Add($"Could not reset the job. {ex.Message}", Severity.Error);
                 }
             }
             StateHasChanged();

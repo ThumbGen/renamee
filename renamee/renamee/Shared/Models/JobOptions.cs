@@ -1,4 +1,6 @@
-﻿namespace renamee.Shared.Models
+﻿using renamee.Shared.Helpers;
+
+namespace renamee.Shared.Models
 {
     public class JobOptions
     {
@@ -12,10 +14,7 @@
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    if (!Path.EndsInDirectorySeparator(value))
-                    {
-                        value += Path.DirectorySeparatorChar;
-                    }
+                    value = value.EnsureDirectoryEnding();
                 }
                 sourceFolder = value ?? string.Empty;
             }
@@ -27,10 +26,7 @@
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    if (!Path.EndsInDirectorySeparator(value))
-                    {
-                        value += Path.DirectorySeparatorChar;
-                    }
+                    value = value.EnsureDirectoryEnding();
                 }
                 destinationFolder = value ?? string.Empty;
             }

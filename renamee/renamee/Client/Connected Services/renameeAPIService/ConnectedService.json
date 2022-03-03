@@ -45,7 +45,7 @@
       "SerializeTypeInformation": false,
       "QueryNullValue": "",
       "ClassName": "{controller}Client",
-      "OperationGenerationMode": 5,
+      "OperationGenerationMode": 4,
       "AdditionalNamespaceUsages": [
         "renamee.Shared.Models",
         "Microsoft.AspNetCore.Mvc"

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using renamee.Shared.Helpers;
 using renamee.Shared.Models;
 
 namespace renamee.Shared.Validators
@@ -31,8 +32,8 @@ namespace renamee.Shared.Validators
                 {
                     return false;
                 }
-                var parentUri = new Uri(source.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar);
-                var childUri = new Uri(dest.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar);
+                var parentUri = new Uri(source.EnsureDirectoryEnding());
+                var childUri = new Uri(dest.EnsureDirectoryEnding());
                 if (parentUri == childUri || childUri.IsBaseOf(parentUri))
                 {
                     return false;

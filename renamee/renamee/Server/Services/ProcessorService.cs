@@ -48,7 +48,7 @@ namespace renamee.Server.Services
                         logger.LogInformation($"\tProcessing job '{jobEntity.Name}'.");
                         await job.Run();
                         logger.LogInformation($"\tJob '{job.Name}' done in {sw.Elapsed:hh\\:mm\\:ss}");
-
+                        // persist state after running
                         await jobsRepository.AddOrUpdate(job.ToDto());
                     }
                     catch (Exception ex)

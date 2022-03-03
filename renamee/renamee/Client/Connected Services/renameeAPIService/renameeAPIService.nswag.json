@@ -10,7 +10,8 @@
         "tags": [
           "Jobs"
         ],
-        "operationId": "JobsAll",
+        "summary": "Get all jobs",
+        "operationId": "GetJobs",
         "responses": {
           "200": {
             "description": "Success",
@@ -47,7 +48,8 @@
         "tags": [
           "Jobs"
         ],
-        "operationId": "JobsPUT",
+        "summary": "Upsert the specified job",
+        "operationId": "UpsertJob",
         "requestBody": {
           "content": {
             "application/json": {
@@ -97,7 +99,8 @@
         "tags": [
           "Jobs"
         ],
-        "operationId": "JobsPOST",
+        "summary": "Create a new job",
+        "operationId": "CreateJob",
         "requestBody": {
           "content": {
             "application/json": {
@@ -149,7 +152,31 @@
         "tags": [
           "Jobs"
         ],
-        "operationId": "JobsDELETE",
+        "summary": "Delete the specified job",
+        "operationId": "DeleteJob",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "Reset the specified job",
+        "operationId": "ResetJob",
         "parameters": [
           {
             "name": "jobId",
@@ -276,6 +303,10 @@
             "type": "boolean"
           },
           "lastExecutedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastProcessedFileModifiedOn": {
             "type": "string",
             "format": "date-time"
           }

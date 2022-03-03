@@ -12,6 +12,7 @@ namespace renamee.Shared.Helpers
                 IsEnabled = job.IsEnabled,
                 JobId = job.JobId,
                 LastExecutedOn = job.LastExecutedOn,
+                LastProcessedFileModifiedOn = job.LastProcessedFileModifiedOn,
                 Name = job.Name,
                 Options = new JobOptionsDto
                 {

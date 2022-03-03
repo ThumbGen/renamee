@@ -10,6 +10,7 @@ namespace renamee.Server.Repositories
         Task<IEnumerable<JobDto>> GetAll();
         Task Delete(Guid jobId);
         Task AddOrUpdate(JobDto job);
+        Task<JobDto> Get(Guid jobId);
     }
 
     public class JobsRepository : IJobsRepository
@@ -36,6 +37,11 @@ namespace renamee.Server.Repositories
         {
             var jobs = store.GetCollection<JobDto>();
             await DeleteCore(jobs, jobId);
+        }
+
+        public Task<JobDto> Get(Guid jobId)
+        {
+            return Task.FromResult(Find(store.GetCollection<JobDto>(), jobId));
         }
 
         public Task<IEnumerable<JobDto>> GetAll()

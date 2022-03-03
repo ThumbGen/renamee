@@ -41,7 +41,7 @@
       "serializeTypeInformation": false,
       "queryNullValue": "",
       "className": "{controller}Client",
-      "operationGenerationMode": "SingleClientFromPathSegments",
+      "operationGenerationMode": "SingleClientFromOperationId",
       "additionalNamespaceUsages": [
         "renamee.Shared.Models",
         "Microsoft.AspNetCore.Mvc"

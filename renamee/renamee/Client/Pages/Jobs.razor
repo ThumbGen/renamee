@@ -52,6 +52,7 @@ else
 
                     <div Class="mt-4">
                         <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="@(async () => await Edit(job))" Class="">Edit</MudButton>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Restore" OnClick="@(async () => await Reset(job))" Class="ml-2">Reset</MudButton>
                         <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(async () => await Delete(job))" Class="ml-2">Delete</MudButton>
                     </div>
 

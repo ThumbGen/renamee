@@ -11,6 +11,7 @@ namespace renamee.Server.Services
         Task Delete(Guid jobId);
         Task AddOrUpdate(IJob job);
         IJob PopulateJob(JobDto jobDto);
+        Task Reset(Guid jobId);
     }
 
     public class JobsService : IJobsService
@@ -44,6 +45,19 @@ namespace renamee.Server.Services
             var job = jobsFactory.Get<IJob>();
             job.AssignFrom(jobDto);
             return job;
+        }
+
+        public async Task Reset(Guid jobId)
+        {
+            var jobDto = await jobsRepository.Get(jobId);
+            if(jobDto != null)
+            {
+                // let the job model decide what reset means
+                var job = jobsFactory.Get<IJob>();
+                job.AssignFrom(jobDto);
+                job.Reset();
+                await jobsRepository.AddOrUpdate(job.ToDto());
+            }
         }
     }
 }

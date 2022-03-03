@@ -50,6 +50,8 @@ builder.Services.AddSwaggerGen(c =>
         Title = "renamee API",
         Version = "v1"
     });
+
+    c.EnableAnnotations();
 });
 
 // options
