@@ -10,6 +10,7 @@ namespace renamee.Shared.Helpers
             {
                 ActionType = job.ActionType,
                 IsEnabled = job.IsEnabled,
+                IsRunning = job.IsRunning,
                 JobId = job.JobId,
                 LastExecutedOn = job.LastExecutedOn,
                 LastProcessedFileModifiedOn = job.LastProcessedFileModifiedOn,

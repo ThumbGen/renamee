@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using renamee.Shared.Helpers;
+using renamee.Shared.Hubs;
 using renamee.Shared.Interfaces;
 using renamee.Shared.Validators;
 
@@ -15,10 +17,12 @@ namespace renamee.Shared.Models
     {
         private readonly IValidator<Job> jobValidator = new JobValidator();
         private readonly IReverseGeocoder reverseGeocoder;
+        private readonly IHubContext<JobsHub, IJobsHub> hubContext;
 
-        public RunnableJob(ILogger<RunnableJob> logger, IReverseGeocoder reverseGeocoder) : base(logger)
+        public RunnableJob(ILogger<RunnableJob> logger, IReverseGeocoder reverseGeocoder, IHubContext<JobsHub,IJobsHub> hubContext) : base(logger)
         {
             this.reverseGeocoder = reverseGeocoder;
+            this.hubContext = hubContext;
         }
 
         public async Task Run()
@@ -32,6 +36,7 @@ namespace renamee.Shared.Models
             IsRunning = true;
             try
             {
+                await hubContext.Clients.All.JobUpdated(this.ToDto());
                 var validationResult = await jobValidator.ValidateAsync(this);
                 if (!validationResult.IsValid)
                 {
@@ -54,7 +59,9 @@ namespace renamee.Shared.Models
             }
             finally
             {
+                LastExecutedOn = DateTimeOffset.UtcNow;
                 IsRunning = false;
+                await hubContext.Clients.All.JobUpdated(this.ToDto());
             }
         }
 
@@ -103,8 +110,6 @@ namespace renamee.Shared.Models
                             LastProcessedFileModifiedOn = new FileInfo(filePath).LastWriteTime;
                             break;
                     }
-
-                    LastExecutedOn = DateTimeOffset.UtcNow;
                 }
                 else
                 {

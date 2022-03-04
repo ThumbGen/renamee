@@ -11,6 +11,7 @@
         public JobActionType ActionType { get; set; } = JobActionType.Simulate;
 
         public bool IsEnabled { get; set; } = false;
+        public bool IsRunning { get; set; } = false;
 
         public DateTimeOffset LastExecutedOn { get; set; } = DateTimeOffset.MinValue;
 

@@ -32,7 +32,7 @@ else
                          Color="Color.Default">@(job.ActionType == JobActionType.Simulate ? "simulate" : (job.ActionType == JobActionType.Copy ? "copy" : "move"))
                         </MudChip>
                         <MudChip Label="true" Size="Size.Small"
-                         Color="@(job.IsRunning? Color.Success : Color.Default)">@(job.IsRunning ? "running" : "idle")</MudChip><!-- update status with signalr -->
+                         Color="@(job.IsRunning? Color.Success : Color.Default)">@(job.IsRunning ? "running" : "idle")</MudChip>
                     </span>
 
                     <MudText Typo="Typo.h6">@job.Name</MudText>

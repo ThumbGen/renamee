@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
 using renamee.Client.Components;
 using renamee.Shared.Helpers;
+using renamee.Shared.Hubs;
 using renamee.Shared.Models;
 using renamee.Shared.Services;
 
 namespace renamee.Client.Pages
 {
-    public partial class Jobs : ComponentBase
+    public partial class Jobs : ComponentBase, IDisposable
     {
         [Inject]
         private IDialogService DialogService { get; set; }
@@ -17,8 +19,25 @@ namespace renamee.Client.Pages
         private Client Client { get; set; }
         [Inject]
         private JobsFactory JobsFactory { get; set; }
+        [Inject]
+        private HubConnection HubConnection { get; set; }
 
         private List<IJob> jobs;
+
+        protected override Task OnParametersSetAsync()
+        {
+            HubConnection.On<JobDto>(nameof(IJobsHub.JobUpdated), newJobData =>
+            {
+                var found = jobs.FirstOrDefault(x => x.JobId == newJobData.JobId);
+                if (found != null)
+                {
+                    found.AssignFrom(newJobData);
+                    StateHasChanged();
+                }
+            });
+            
+            return base.OnParametersSetAsync();
+        }
 
         protected override async Task OnInitializedAsync()
         {
@@ -179,6 +198,11 @@ namespace renamee.Client.Pages
                 }
             }
             StateHasChanged();
+        }
+
+        public void Dispose()
+        {
+            HubConnection.Remove(nameof(IJobsHub.JobUpdated));
         }
     }
 }

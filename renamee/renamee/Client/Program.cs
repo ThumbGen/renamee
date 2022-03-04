@@ -1,6 +1,8 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
 using MudBlazor.Services;
 using renamee.Client;
@@ -33,6 +35,14 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<Client>(sp => new Client(builder.HostEnvironment.BaseAddress, sp.GetService<HttpClient>()));
 builder.Services.AddTransient<IJob, Job>();
 builder.Services.AddSingleton<JobsFactory>();
+
+builder.Services.AddSingleton<HubConnection>(sp => {
+    var navigationManager = sp.GetRequiredService<NavigationManager>();
+    return new HubConnectionBuilder()
+      .WithUrl(navigationManager.ToAbsoluteUri(renamee.Shared.Hubs.Consts.JobsHub))
+      .WithAutomaticReconnect()
+      .Build();
+});
 
 await builder.Build().RunAsync();
 

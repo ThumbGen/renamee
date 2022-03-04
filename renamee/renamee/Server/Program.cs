@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using renamee.Server.Options;
 using renamee.Server.Repositories;
 using renamee.Server.Services;
+using renamee.Shared.Hubs;
 using renamee.Shared.Interfaces;
 using renamee.Shared.Models;
 using renamee.Shared.Services;
@@ -28,6 +29,9 @@ builder.WebHost.ConfigureKestrel(options =>
 builder.Services.AddHealthChecks();
 builder.Services.AddControllersWithViews().AddFluentValidation();
 builder.Services.AddRazorPages();
+
+// signalR
+builder.Services.AddSignalR();
 
 // services
 builder.Services.AddValidatorsFromAssemblyContaining<JobValidator>(ServiceLifetime.Transient);
@@ -94,6 +98,7 @@ app.UseRouting();
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+app.MapHub<JobsHub>(Consts.JobsHub);
 
 app.UseHealthChecks("/health");
 

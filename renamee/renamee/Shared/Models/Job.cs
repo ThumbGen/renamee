@@ -52,6 +52,7 @@ namespace renamee.Shared.Models
             LastProcessedFileModifiedOn = job.LastProcessedFileModifiedOn;
             ActionType = job.ActionType;
             IsEnabled = job.IsEnabled;
+            IsRunning = job.IsRunning;
             Options.AssignFrom(job.Options);
         }
 
