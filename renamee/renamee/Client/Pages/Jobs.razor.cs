@@ -48,7 +48,12 @@ namespace renamee.Client.Pages
 
         private async Task OnIsEnabledChanged(IJob job)
         {
-            job.IsEnabled = !job.IsEnabled;
+            await SetIsEnabled(job, !job.IsEnabled);
+        }
+
+        private async Task SetIsEnabled(IJob job, bool value)
+        {
+            job.IsEnabled = value;
             try
             {
                 await Client.UpsertJobAsync(job.ToDto());
@@ -63,25 +68,37 @@ namespace renamee.Client.Pages
 
         private async Task Edit(IJob job)
         {
-            var parameters = new DialogParameters { ["Job"] = job };
-            var dialog = DialogService.Show<JobDialog>("New job", parameters, new DialogOptions
+            var orgIsEnabled = job.IsEnabled;
+            try
             {
-                CloseOnEscapeKey = true,
-                MaxWidth = MaxWidth.Large
-            });
-            var result = await dialog.Result;
-            if (!result.Cancelled)
-            {
-                try
+                // disable job to avoid problems while editing
+                await SetIsEnabled(job, false);
+
+                var parameters = new DialogParameters { ["Job"] = job };
+                var dialog = DialogService.Show<JobDialog>("New job", parameters, new DialogOptions
                 {
-                    await Client.UpsertJobAsync(job.ToDto());
-                    Snackbar.Add($"Job was updated successfully.", Severity.Success);
-                }
-                catch (Exception ex)
+                    CloseOnEscapeKey = true,
+                    MaxWidth = MaxWidth.Large
+                });
+                var result = await dialog.Result;
+                if (!result.Cancelled)
                 {
-                    Snackbar.Add($"Could not save the job. {ex.Message}", Severity.Error);
+                    try
+                    {
+                        await Client.UpsertJobAsync(job.ToDto());
+                        Snackbar.Add($"Job was updated successfully.", Severity.Success);
+                    }
+                    catch (Exception ex)
+                    {
+                        Snackbar.Add($"Could not save the job. {ex.Message}", Severity.Error);
+                    }
                 }
             }
+            finally
+            {
+                await SetIsEnabled(job, orgIsEnabled);
+            }
+
             // refresh always (or store original job, for the cancel case)
             await Refresh();
         }
