@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "renamee.Server", "renamee\Server\renamee.Server.csproj", "{4C66C1D0-6894-41BF-9933-AC3AEA975066}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "renamee.Client", "renamee\Client\renamee.Client.csproj", "{F744EFD4-3A6E-4D48-ABEB-26B814545E64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "renamee.Shared", "renamee\Shared\renamee.Shared.csproj", "{BE735E9C-AECD-43FA-AA78-135493956F08}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "renamee.tests", "renamee.tests\renamee.tests.csproj", "{95557D20-2001-4EA1-B2A9-A4FD0E457464}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseGeocoder", "ReverseGeocoder\ReverseGeocoder.csproj", "{CD595E81-DDC0-4C11-A2EA-A893D0E44798}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseGeocoder.Tests", "ReverseGeocoder.Tests\ReverseGeocoder.Tests.csproj", "{94C85F50-0569-403E-820D-7D4AB3ECE6F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C66C1D0-6894-41BF-9933-AC3AEA975066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C66C1D0-6894-41BF-9933-AC3AEA975066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C66C1D0-6894-41BF-9933-AC3AEA975066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C66C1D0-6894-41BF-9933-AC3AEA975066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F744EFD4-3A6E-4D48-ABEB-26B814545E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F744EFD4-3A6E-4D48-ABEB-26B814545E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F744EFD4-3A6E-4D48-ABEB-26B814545E64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F744EFD4-3A6E-4D48-ABEB-26B814545E64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE735E9C-AECD-43FA-AA78-135493956F08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE735E9C-AECD-43FA-AA78-135493956F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE735E9C-AECD-43FA-AA78-135493956F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE735E9C-AECD-43FA-AA78-135493956F08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95557D20-2001-4EA1-B2A9-A4FD0E457464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95557D20-2001-4EA1-B2A9-A4FD0E457464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95557D20-2001-4EA1-B2A9-A4FD0E457464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95557D20-2001-4EA1-B2A9-A4FD0E457464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD595E81-DDC0-4C11-A2EA-A893D0E44798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD595E81-DDC0-4C11-A2EA-A893D0E44798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD595E81-DDC0-4C11-A2EA-A893D0E44798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD595E81-DDC0-4C11-A2EA-A893D0E44798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94C85F50-0569-403E-820D-7D4AB3ECE6F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C85F50-0569-403E-820D-7D4AB3ECE6F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C85F50-0569-403E-820D-7D4AB3ECE6F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C85F50-0569-403E-820D-7D4AB3ECE6F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7C128967-4213-4E22-B585-BB890132FDDA}
+	EndGlobalSection
+EndGlobal

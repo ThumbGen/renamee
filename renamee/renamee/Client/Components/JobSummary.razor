@@ -1,0 +1,19 @@
+﻿@using renamee.Shared.Helpers
+@using renamee.Shared.Models
+
+<MudText Typo="Typo.body1" Color="Color.Default" Class="">Source folder</MudText>
+<MudText Typo="Typo.subtitle2">@Job.Options.SourceFolder</MudText>
+
+<MudText Typo="Typo.body1" Color="Color.Default" Class="mt-4">Destination folder</MudText>
+<MudText Typo="Typo.subtitle2">@Job.Options.DestinationFolder</MudText>
+
+<MudText Typo="Typo.body1" Color="Color.Default" Class="mt-4">Format pattern</MudText>
+<MudText Typo="Typo.subtitle2">@Job.Options.FormatPattern</MudText>
+<MudText Typo="Typo.body2">E.g. @Job.GetDemoFormat()</MudText>
+
+@code {
+    [Parameter]
+    public IJob Job{ get; set; }
+
+   
+}

@@ -1,0 +1,21 @@
+﻿@page "/about"
+@using System.Reflection
+
+
+<div class="ma-8">
+
+    <MudImage Src="/Assets/renamee-logos_black_slim.png"
+              Alt="the renamee logo"
+              Elevation="0"
+              ObjectPosition="ObjectPosition.Left"
+              Height="64"></MudImage>
+    <MudText Typo="Typo.h5">v@(AppVersion)</MudText>
+
+</div>
+
+@code {
+    string AppVersion = Assembly
+        .GetEntryAssembly()
+        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+        .InformationalVersion;
+}
