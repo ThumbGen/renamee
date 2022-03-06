@@ -27,7 +27,13 @@
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\GeoSqlite\GeoSqlite.csproj" />
 	  <ProjectReference Include="..\ReverseGeocoder\ReverseGeocoder.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="tests.csv">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 	
 </Project>

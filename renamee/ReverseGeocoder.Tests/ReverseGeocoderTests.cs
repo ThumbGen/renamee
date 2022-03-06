@@ -2,6 +2,7 @@
 using System.IO;
 using NUnit.Framework;
 using ReverseGeocoding.Interface;
+using ReversePlace;
 
 namespace ReverseGeocoding.Tests
 {
@@ -26,9 +27,21 @@ namespace ReverseGeocoding.Tests
         private const double testPlaceLatitude3 = 21.92051;
         private const double testPlaceLongitude3 = 99.15254;
 
+        private const string detailedPlaceName = "Bioparc Fuengirola";
+        private const string testCountry4 = "Spain";
+        private const double testPlaceLatitude4 = 36.5375;
+        private const double testPlaceLongitude4 = -4.6272;
+
         private static string CitiesDbPath => Path.Combine(TestContext.CurrentContext.TestDirectory, citiesDb);
 
         private static string CountresDbPath => Path.Combine(TestContext.CurrentContext.TestDirectory, countresDb);
+
+        [OneTimeSetUp]
+        public void GlobalSetup()
+        {
+            new PlaceGeocoderContext().DeleteDatabase();
+            new PlaceGeocoderContext().Initialize("tests.csv");
+        }
 
         [TestCase(testPlaceLatitude1, testPlaceLongitude1, testCity1)]
         [TestCase(testPlaceLatitude2, testPlaceLongitude2, testCity2)]
@@ -174,6 +187,24 @@ namespace ReverseGeocoding.Tests
             // ReSharper disable once ExpressionIsAlwaysNull
             // ReSharper disable once ObjectCreationAsStatement
             Assert.Throws<ArgumentNullException>(() => new ReverseGeocoder(parameter));
+        }
+
+        [TestCase(testPlaceLatitude4, testPlaceLongitude4, detailedPlaceName, testCountry4)]
+
+        public void DetailedLocationTest(double latitude, double longitude, string expectedDetailedPlace, string expectedCountry)
+        {
+            IReverseGeocoder geocoder = new ReverseGeocoder(CitiesDbPath, CountresDbPath);
+            var place = geocoder.GetNearestPlace(latitude, longitude);
+
+            Assert.NotNull(place);
+            Assert.NotNull(place.CountryInfo);
+            Assert.AreEqual(expectedCountry, place.CountryInfo.Country);
+
+            IReversePlaceGeocoder reversePlaceGeocoder = new ReversePlaceGeocoder();
+
+            var detailedPlace = reversePlaceGeocoder.GetNearestPlace(latitude, longitude, place.CountryCode);
+            Assert.AreEqual(expectedDetailedPlace, detailedPlace.Name);
+            Assert.AreEqual(place.CountryCode, detailedPlace.CountryCode);
         }
     }
 }
