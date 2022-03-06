@@ -14,7 +14,6 @@ namespace ReversePlace
 
             var origin = new Coordinate(latitude, longitude);
             var maxDistance = 0.1;
-            var boundaries = new CoordinateBoundaries(origin, distance: maxDistance, DistanceUnit.Kilometers);
 
             using (var db = new PlaceGeocoderContext())
             {
@@ -26,6 +25,8 @@ namespace ReversePlace
 
                 while (nearestLocation == null && maxDistance < 100) 
                 {
+                    var boundaries = new CoordinateBoundaries(origin, distance: maxDistance, DistanceUnit.Kilometers);
+
                     var nearlocations = db.Locations.Where(x =>
                         x.Latitude >= boundaries.MinLatitude && x.Latitude <= boundaries.MaxLatitude && // within latitude range
                         x.Longitude >= boundaries.MinLongitude && x.Longitude <= boundaries.MaxLongitude)  // within longitude range
