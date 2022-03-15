@@ -30,33 +30,45 @@ namespace renamee.Server.Services
             var sw = new Stopwatch();
             sw.Start();
 
-            foreach (var jobEntity in await jobsRepository.GetAll())
+            var jobs = (await jobsRepository.GetAll()).ToList();
+            logger.LogInformation($"Found {jobs.Count} job(s)");
+
+            foreach (var jobEntity in jobs)
             {
-                if (!jobEntity.IsEnabled)
+                try
                 {
-                    logger.LogInformation($"\tSkipping job '{jobEntity.Name}' as it is disabled.");
-                    continue;
-                }
+                    if (!jobEntity.IsEnabled)
+                    {
+                        logger.LogInformation($"\tSkipping job '{jobEntity.Name}' as it is disabled.");
+                        continue;
+                    }
 
-                var job = jobsFactory.Get<IRunnableJob>();
-                if (job != null)
+                    var job = jobsFactory.Get<IRunnableJob>();
+                    if (job != null)
+                    {
+                        logger.LogInformation($"Loading job {job.Name}");
+                        job.AssignFrom(jobEntity);
+                        logger.LogInformation($"Job {job.Name} loaded");
+
+                        try
+                        {
+                            logger.LogInformation($"\tProcessing job '{jobEntity.Name}'.");
+                            await job.Run();
+                            logger.LogInformation($"\tJob '{job.Name}' done in {sw.Elapsed:hh\\:mm\\:ss}");
+                            // persist state after running
+                            await jobsRepository.AddOrUpdate(job.ToDto());
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.LogError($"\tFailed processing job {job.Name} / {job.JobId}", ex);
+                        }
+                    }
+                    else logger.LogError("Can't resolve a Job");
+                }
+                catch (Exception ex)
                 {
-                    job.AssignFrom(jobEntity);
-
-                    try
-                    {
-                        logger.LogInformation($"\tProcessing job '{jobEntity.Name}'.");
-                        await job.Run();
-                        logger.LogInformation($"\tJob '{job.Name}' done in {sw.Elapsed:hh\\:mm\\:ss}");
-                        // persist state after running
-                        await jobsRepository.AddOrUpdate(job.ToDto());
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError($"\tFailed processing job {job.Name} / {job.JobId}", ex);
-                    }
+                    logger.LogError(ex, "Processing job");
                 }
-                else logger.LogError("Can't resolve a Job");
             }
 
             sw.Stop();

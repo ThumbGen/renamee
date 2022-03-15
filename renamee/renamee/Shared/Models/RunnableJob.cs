@@ -47,6 +47,7 @@ namespace renamee.Shared.Models
 
                 var files = Directory
                     .GetFileSystemEntries(Options.SourceFolder, "*", SearchOption.AllDirectories)
+                    .Where(file => !file.ToUpperInvariant().Contains("@EADIR"))
                     .Where(file => MediaInformation.MediaExtensions.Contains(Path.GetExtension(file).ToUpperInvariant()))
                     .Where(file => new FileInfo(file).LastWriteTimeUtc > this.LastProcessedFileModifiedOn)
                     .ToList(); // important, as enumerating will be affected by the changing 'where' condition
@@ -56,6 +57,10 @@ namespace renamee.Shared.Models
                 {
                     await ProcessFile(file);
                 }
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex, "Processing job " + Name);
             }
             finally
             {
@@ -93,8 +98,6 @@ namespace renamee.Shared.Models
 
                     var targetPath = Path.Combine(Options.DestinationFolder, coercedFinalSegments + extension);
 
-                    Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-
                     switch (ActionType)
                     {
                         default:
@@ -102,10 +105,12 @@ namespace renamee.Shared.Models
                             logger.LogInformation($"Simulation. Source: {filename} Target: {targetPath}");
                             break;
                         case JobActionType.Copy:
+                            Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
                             File.Copy(filePath, targetPath, true);
                             LastProcessedFileModifiedOn = new FileInfo(filePath).LastWriteTime;
                             break;
                         case JobActionType.Move:
+                            Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
                             File.Move(filePath, targetPath, true);
                             LastProcessedFileModifiedOn = new FileInfo(filePath).LastWriteTime;
                             break;

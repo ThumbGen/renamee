@@ -22,6 +22,7 @@ namespace renamee.Server.Repositories
             options = repositoryOptions.Value;
             // Open database (create new if file doesn't exist)
             var dbPath = OperatingSystem.IsLinux() ? options.DatabasePathLinux : options.DatabasePath;
+            Directory.CreateDirectory(dbPath);
             store = new DataStore(Path.Combine(Path.GetDirectoryName(dbPath), "settings_db.json"));
         }
 

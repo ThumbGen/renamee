@@ -21,9 +21,10 @@ namespace renamee.Server.Repositories
         public JobsRepository(IOptions<RepositoryOptions> repositoryOptions)
         {
             options = repositoryOptions.Value;
-
+            var path = OperatingSystem.IsLinux() ? options.DatabasePathLinux : options.DatabasePath;
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
             // Open database (create new if file doesn't exist)
-            store = new DataStore(OperatingSystem.IsLinux() ? options.DatabasePathLinux : options.DatabasePath);
+            store = new DataStore(path);
         }
 
         public async Task AddOrUpdate(JobDto job)
